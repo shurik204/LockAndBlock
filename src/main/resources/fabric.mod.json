@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "lockandblock",
+  "version": "${version}",
+  "name": "LockAndBlock",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/andersmmg/LockAndBlock"
+  },
+  "license": "GPL-3.0",
+  "icon": "assets/lockandblock/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.andersmmg.lockandblock.client.LockAndBlockClient"
+    ],
+    "main": [
+      "com.andersmmg.lockandblock.LockAndBlock"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
