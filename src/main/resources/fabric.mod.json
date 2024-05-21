@@ -17,6 +17,9 @@
     ],
     "main": [
       "com.andersmmg.lockandblock.LockAndBlock"
+    ],
+    "fabric-datagen": [
+      "com.andersmmg.lockandblock.LockAndBlockDataGenerator"
     ]
   },
   "depends": {
