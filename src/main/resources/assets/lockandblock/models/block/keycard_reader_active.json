@@ -1,0 +1,76 @@
+{
+  "textures": {
+    "0": "lockandblock:block/keycard_reader_active",
+    "particle": "lockandblock:block/keycard_reader_active"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        3,
+        15
+      ],
+      "to": [
+        13,
+        13,
+        16
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          5,
+          5,
+          14
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            10,
+            10
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            10,
+            0,
+            11,
+            10
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            11,
+            0,
+            12,
+            10
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            10,
+            12,
+            0,
+            11
+          ],
+          "texture": "#0"
+        },
+        "down": {
+          "uv": [
+            10,
+            10,
+            0,
+            11
+          ],
+          "texture": "#0"
+        }
+      }
+    }
+  ]
+}
