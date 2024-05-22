@@ -1,13 +1,18 @@
 package com.andersmmg.lockandblock.block.custom;
 
+import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.block.entity.KeycardReaderBlockEntity;
 import com.andersmmg.lockandblock.item.ModItems;
+import com.andersmmg.lockandblock.item.custom.KeycardItem;
+import com.andersmmg.lockandblock.sounds.ModSounds;
 import com.andersmmg.lockandblock.util.VoxelUtils;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
@@ -36,20 +41,66 @@ public class KeycardReaderBlock extends BlockWithEntity {
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false));
     }
 
+    protected static Direction getDirection(BlockState state) {
+        return state.get(FACING);
+    }
+
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (player.getStackInHand(hand).isOf(ModItems.KEYCARD)) {
-            if (!state.get(POWERED)) {
-                if (!world.isClient()) {
-                    world.setBlockState(pos, state.with(POWERED, true), 3);
-                    world.scheduleBlockTick(pos, this, 20, TickPriority.NORMAL);
-                    this.updateNeighbors(state, (ServerWorld) world, pos);
+        ItemStack stack = player.getStackInHand(hand);
+        if (state.get(POWERED)) {
+            return ActionResult.FAIL;
+        }
+        if (stack.isOf(ModItems.KEYCARD)) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof KeycardReaderBlockEntity keycardReaderBlockEntity) {
+                if (keycardReaderBlockEntity.hasUuid()) {
+                    if (KeycardItem.hasUuid(stack)) {
+                        if (keycardReaderBlockEntity.getUuid().equals(KeycardItem.getUuid(stack))) {
+                            return this.activate(state, world, pos);
+                        } else {
+                            if (!world.isClient) {
+                                world.playSound(null, pos, ModSounds.BEEP_ERROR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                                player.sendMessage(LockAndBlock.langText("wrong_keycard"), true);
+                            }
+                        }
+                    } else {
+                        if (!world.isClient) {
+                            world.playSound(null, pos, ModSounds.BEEP_ERROR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                            player.sendMessage(LockAndBlock.langText("blank_keycard"), true);
+                        }
+                    }
+                } else {
+                    if (KeycardItem.hasUuid(stack)) {
+                        if (!world.isClient) {
+                            keycardReaderBlockEntity.setUuid(KeycardItem.getUuid(stack));
+                            player.sendMessage(LockAndBlock.langText("reader_programmed"), true);
+                            return this.activate(state, world, pos);
+                        }
+                    } else {
+                        if (!world.isClient) {
+                            world.playSound(null, pos, ModSounds.BEEP_ERROR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                            player.sendMessage(LockAndBlock.langText("blank_keycard"), true);
+                        }
+                    }
                 }
-                return ActionResult.SUCCESS;
             }
             return ActionResult.SUCCESS;
         }
         return ActionResult.FAIL;
+    }
+
+    private ActionResult activate(BlockState state, World world, BlockPos pos) {
+        if (!state.get(POWERED)) {
+            if (!world.isClient()) {
+                world.playSound(null, pos, ModSounds.BEEP_SUCCESS, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                world.setBlockState(pos, state.with(POWERED, true), 3);
+                world.scheduleBlockTick(pos, this, 20, TickPriority.NORMAL);
+                this.updateNeighbors(state, (ServerWorld) world, pos);
+            }
+            return ActionResult.SUCCESS;
+        }
+        return ActionResult.CONSUME;
     }
 
     private void updateNeighbors(BlockState state, ServerWorld world, BlockPos pos) {
@@ -67,10 +118,6 @@ public class KeycardReaderBlock extends BlockWithEntity {
 
     public boolean emitsRedstonePower(BlockState state) {
         return true;
-    }
-
-    protected static Direction getDirection(BlockState state) {
-        return state.get(FACING);
     }
 
     @Override

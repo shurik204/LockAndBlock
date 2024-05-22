@@ -6,11 +6,11 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 
-public class KeycardReaderBlockEntity extends BlockEntity {
+public class KeycardClonerBlockEntity extends BlockEntity {
     private String uuid = "";
 
-    public KeycardReaderBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.KEYCARD_READER_BLOCK_ENTITY, pos, state);
+    public KeycardClonerBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.KEYCARD_CLONER_BLOCK_ENTITY, pos, state);
     }
 
     @Override
@@ -35,5 +35,9 @@ public class KeycardReaderBlockEntity extends BlockEntity {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public void clearUuid() {
+        this.uuid = "";
     }
 }

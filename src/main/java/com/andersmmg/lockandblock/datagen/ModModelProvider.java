@@ -17,11 +17,19 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         registerActivatable(blockStateModelGenerator, ModBlocks.KEYCARD_READER);
+        registerRotatable(blockStateModelGenerator, ModBlocks.KEYCARD_WRITER);
+        registerRotatable(blockStateModelGenerator, ModBlocks.KEYCARD_CLONER);
     }
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(ModItems.KEYCARD, Models.GENERATED);
+    }
+
+    private void registerRotatable(BlockStateModelGenerator blockStateModelGenerator, Block block) {
+        Identifier model_base = ModelIds.getBlockModelId(block);
+        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block, BlockStateVariant.create().put(VariantSettings.MODEL, model_base))
+                .coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
     }
 
     private void registerActivatable(BlockStateModelGenerator blockStateModelGenerator, Block block) {

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "lockandblock:block/keycard_cloner",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "lockandblock:block/keycard_cloner"
+    },
+    "facing=south": {
+      "model": "lockandblock:block/keycard_cloner",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "lockandblock:block/keycard_cloner",
+      "y": 270
+    }
+  }
+}

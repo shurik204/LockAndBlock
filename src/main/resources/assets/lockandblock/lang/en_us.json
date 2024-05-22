@@ -1,5 +1,18 @@
 {
   "item.lockandblock.keycard": "Keycard",
   "block.lockandblock.keycard_reader": "Keycard Reader",
-  "itemGroup.lockandblock.item_group": "Lock & Block"
+  "block.lockandblock.keycard_writer": "Keycard Writer",
+  "itemGroup.lockandblock.item_group": "Lock & Block",
+  "text.lockandblock.wrong_keycard": "Access denied.",
+  "text.lockandblock.blank_keycard": "Blank keycard detected.",
+  "text.lockandblock.reader_programmed": "Keycard reader programmed",
+  "text.lockandblock.card_not_blank": "Not a blank keycard.",
+  "text.lockandblock.card_written": "Keycard programmed.",
+  "text.lockandblock.card_copied": "Keycard copied.",
+  "text.lockandblock.keycard.blank": "Blank",
+  "text.lockandblock.keycard.written": "Programmed",
+  "text.lockandblock.card_saved": "Card saved, ready to clone.",
+  "text.lockandblock.card_cleared": "Card cleared.",
+  "sounds.lockandblock.beep_success": "Successful beep",
+  "sounds.lockandblock.beep_error": "Error beep"
 }

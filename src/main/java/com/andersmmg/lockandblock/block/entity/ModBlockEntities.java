@@ -12,6 +12,10 @@ public class ModBlockEntities {
             Registry.register(Registries.BLOCK_ENTITY_TYPE, LockAndBlock.id("keycard_reader_be"),
                     FabricBlockEntityTypeBuilder.create(KeycardReaderBlockEntity::new,
                             ModBlocks.KEYCARD_READER).build());
+    public static final BlockEntityType<KeycardClonerBlockEntity> KEYCARD_CLONER_BLOCK_ENTITY =
+            Registry.register(Registries.BLOCK_ENTITY_TYPE, LockAndBlock.id("keycard_cloner_be"),
+                    FabricBlockEntityTypeBuilder.create(KeycardClonerBlockEntity::new,
+                            ModBlocks.KEYCARD_CLONER).build());
 
     public static void registerBlockEntities() {
         LockAndBlock.LOGGER.info("Registering Block Entities for " + LockAndBlock.MOD_ID);

@@ -1,0 +1,14 @@
+{
+  "beep_success": {
+    "subtitle": "sounds.lockandblock.beep_success",
+    "sounds": [
+      "lockandblock:beep_success"
+    ]
+  },
+  "beep_error": {
+    "subtitle": "sounds.lockandblock.beep_error",
+    "sounds": [
+      "lockandblock:beep_error"
+    ]
+  }
+}

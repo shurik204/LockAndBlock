@@ -8,7 +8,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
 public class ModItems {
-    public static final Item KEYCARD = registerItem("keycard", new KeycardItem(new OwoItemSettings().group(ModItemGroups.LOCKBLOCK_GROUP)));
+    public static final Item KEYCARD = registerItem("keycard", new KeycardItem(new OwoItemSettings().maxCount(1).group(ModItemGroups.LOCKBLOCK_GROUP)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, LockAndBlock.id(name), item);
