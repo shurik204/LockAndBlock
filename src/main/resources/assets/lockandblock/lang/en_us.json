@@ -15,6 +15,9 @@
   "text.lockandblock.keycard.written": "Programmed",
   "text.lockandblock.card_saved": "Card saved, ready to clone.",
   "text.lockandblock.card_cleared": "Card cleared.",
+  "text.config.lockandblock.title": "Lock & Block Configuration",
+  "text.config.lockandblock.option.teslaCoilDamage": "Tesla Coil damage",
+  "text.config.lockandblock.option.teslaCoilRange": "Tesla Coil range",
   "sounds.lockandblock.beep_success": "Successful beep",
   "sounds.lockandblock.beep_error": "Error beep",
   "death.attack.tesla_coil": "%s encountered high voltage"

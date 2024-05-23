@@ -69,13 +69,13 @@ public class TeslaCoilBlock extends Block {
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (world.isClient()) return;
         if (state.get(POWERED)) {
-            Box detectionBox = new Box(pos).expand(2.0);
+            Box detectionBox = new Box(pos).expand(LockAndBlock.CONFIG.teslaCoilRange());
 
             List<PlayerEntity> players = world.getEntitiesByClass(PlayerEntity.class, detectionBox, player -> true);
 
             for (PlayerEntity player : players) {
                 if (player.canTakeDamage())
-                    player.damage(LockAndBlock.damageOf(world, LockAndBlock.TESLA_COIL_DAMAGE), 3.0f);
+                    player.damage(LockAndBlock.damageOf(world, LockAndBlock.TESLA_COIL_DAMAGE), LockAndBlock.CONFIG.teslaCoilDamage());
             }
         }
         world.scheduleBlockTick(pos, this, random.nextBetween(10, 20), TickPriority.byIndex(1));

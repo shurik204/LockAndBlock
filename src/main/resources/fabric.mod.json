@@ -2,9 +2,11 @@
   "schemaVersion": 1,
   "id": "lockandblock",
   "version": "${version}",
-  "name": "LockAndBlock",
-  "description": "",
-  "authors": [],
+  "name": "Lock & Block",
+  "description": "Fun and creative security features to protect your Minecraft world",
+  "authors": [
+    "Andersmmg"
+  ],
   "contact": {
     "repo": "https://github.com/andersmmg/LockAndBlock"
   },
