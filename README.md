@@ -36,7 +36,6 @@ Lock & Block introduces fun and creative security features to protect your Minec
 
 - Motion sensor
 - Lockable doors
-- Keypad code locks
 - Force fields
 - Crafting recipes
 
