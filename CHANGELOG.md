@@ -15,11 +15,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
-## [0.0.0] - 2024-05-21
+## [0.1.0] - 2024-05-22
 
-### Changed
+### Added
 
-- Initial version
+- Keycards
+- Keycard reader
+- Keycard writer
+- Keycard cloner
 
-[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.0.0...HEAD
-[0.0.0]: https://github.com/andersmmg/LockAndBlock/commits/v0.0.0
+[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.1.0...HEAD
+
+[0.1.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.0.0...v0.1.0

@@ -13,7 +13,7 @@ Lock & Block introduces fun and creative security features to protect your Minec
 
 ### Features:
 
-- **Example:** None yet
+- **Keycards & readers:** Program keycard readers to only accept your keycard to access your secret stuff
 
 ### Requirements:
 
@@ -31,9 +31,12 @@ Lock & Block introduces fun and creative security features to protect your Minec
 
 ### Planned Possible Features:
 
-- Keycards and readers
 - Motion sensor
 - Lockable doors
+- Keypad code locks
+- Force fields
+- Tesla coils
+- Crafting recipes
 
 Please note that these features are planned possibilities and not guaranteed. As a solo developer, I'll do my best to
 implement them, but development priorities may change.
