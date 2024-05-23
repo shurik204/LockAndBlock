@@ -7,6 +7,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [0.2.0] - 2024-05-23
+
+### Added
+
 - Tesla coil
 - Mod config options
 - Keypads for code entry
@@ -14,12 +26,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - Updated metadata
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [0.1.0] - 2024-05-22
 
@@ -30,6 +36,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Keycard writer
 - Keycard cloner
 
-[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.2.0...HEAD
 
+[0.2.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.0.0...v0.1.0
