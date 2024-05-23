@@ -1,4 +1,5 @@
-# Lock & Block
+![Lock & Block](https://github.com/andersmmg/LockAndBlock/assets/16022203/ba1039ef-62cf-49c2-ad9c-4e5194718be2)
+
 
 [![Modrinth](https://img.shields.io/badge/Modrinth-1bd96a?style=for-the-badge&logo=modrinth&logoColor=white)
 ](https://modrinth.com/mod/lockandblock)
