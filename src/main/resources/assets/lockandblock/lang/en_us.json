@@ -2,6 +2,8 @@
   "item.lockandblock.keycard": "Keycard",
   "block.lockandblock.keycard_reader": "Keycard Reader",
   "block.lockandblock.keycard_writer": "Keycard Writer",
+  "block.lockandblock.keycard_cloner": "Keycard Cloner",
+  "block.lockandblock.tesla_coil": "Tesla Coil",
   "itemGroup.lockandblock.item_group": "Lock & Block",
   "text.lockandblock.wrong_keycard": "Access denied.",
   "text.lockandblock.blank_keycard": "Blank keycard detected.",
@@ -14,5 +16,6 @@
   "text.lockandblock.card_saved": "Card saved, ready to clone.",
   "text.lockandblock.card_cleared": "Card cleared.",
   "sounds.lockandblock.beep_success": "Successful beep",
-  "sounds.lockandblock.beep_error": "Error beep"
+  "sounds.lockandblock.beep_error": "Error beep",
+  "death.attack.tesla_coil": "%s encountered high voltage"
 }

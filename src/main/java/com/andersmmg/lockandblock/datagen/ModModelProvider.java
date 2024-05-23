@@ -19,6 +19,7 @@ public class ModModelProvider extends FabricModelProvider {
         registerActivatable(blockStateModelGenerator, ModBlocks.KEYCARD_READER);
         registerRotatable(blockStateModelGenerator, ModBlocks.KEYCARD_WRITER);
         registerRotatable(blockStateModelGenerator, ModBlocks.KEYCARD_CLONER);
+        registerTeslaCoil(blockStateModelGenerator, ModBlocks.TESLA_COIL);
     }
 
     @Override
@@ -30,6 +31,14 @@ public class ModModelProvider extends FabricModelProvider {
         Identifier model_base = ModelIds.getBlockModelId(block);
         blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block, BlockStateVariant.create().put(VariantSettings.MODEL, model_base))
                 .coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
+    }
+
+    private void registerTeslaCoil(BlockStateModelGenerator blockStateModelGenerator, Block block) {
+        Identifier model_base = ModelIds.getBlockModelId(block);
+        Identifier model_powered = ModelIds.getBlockSubModelId(block, "_powered");
+        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block, BlockStateVariant.create().put(VariantSettings.MODEL, model_base))
+                .coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates())
+                .coordinate(BlockStateModelGenerator.createBooleanModelMap(Properties.POWERED, model_powered, model_base)));
     }
 
     private void registerActivatable(BlockStateModelGenerator blockStateModelGenerator, Block block) {

@@ -4,6 +4,7 @@ import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.block.custom.KeycardClonerBlock;
 import com.andersmmg.lockandblock.block.custom.KeycardReaderBlock;
 import com.andersmmg.lockandblock.block.custom.KeycardWriterBlock;
+import com.andersmmg.lockandblock.block.custom.TeslaCoilBlock;
 import com.andersmmg.lockandblock.item.ModItemGroups;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -21,6 +22,8 @@ public class ModBlocks {
             new KeycardWriterBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
     public static final Block KEYCARD_CLONER = registerBlock("keycard_cloner",
             new KeycardClonerBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
+    public static final Block TESLA_COIL = registerBlock("tesla_coil",
+            new TeslaCoilBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
