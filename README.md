@@ -15,6 +15,7 @@ Lock & Block introduces fun and creative security features to protect your Minec
 ### Features:
 
 - **Keycards & readers:** Program keycard readers to only accept your keycard to access your secret stuff
+- **Tesla Coil:** Protect areas by zapping anyone nearby when powered by redstone
 
 ### Requirements:
 
@@ -36,7 +37,6 @@ Lock & Block introduces fun and creative security features to protect your Minec
 - Lockable doors
 - Keypad code locks
 - Force fields
-- Tesla coils
 - Crafting recipes
 
 Please note that these features are planned possibilities and not guaranteed. As a solo developer, I'll do my best to
