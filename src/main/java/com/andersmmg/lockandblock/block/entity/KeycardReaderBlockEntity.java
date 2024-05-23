@@ -1,10 +1,16 @@
 package com.andersmmg.lockandblock.block.entity;
 
 import com.andersmmg.lockandblock.LockAndBlock;
+import com.andersmmg.lockandblock.item.custom.KeycardItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
 public class KeycardReaderBlockEntity extends BlockEntity {
     private String uuid = "";
@@ -35,5 +41,27 @@ public class KeycardReaderBlockEntity extends BlockEntity {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public boolean checkKeycard(ItemStack stack) {
+        if (KeycardItem.hasUuid(stack)) {
+            return KeycardItem.getUuid(stack).equals(this.uuid);
+        }
+        return false;
+    }
+
+    public void clearUuid() {
+        this.uuid = "";
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt() {
+        return createNbt();
     }
 }

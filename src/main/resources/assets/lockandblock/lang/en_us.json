@@ -18,6 +18,9 @@
   "text.config.lockandblock.title": "Lock & Block Configuration",
   "text.config.lockandblock.option.teslaCoilDamage": "Tesla Coil damage",
   "text.config.lockandblock.option.teslaCoilRange": "Tesla Coil range",
+  "gui.lockandblock.keycard_reader.title": "Keycard Reader",
+  "gui.lockandblock.keycard_reader.clear": "Clear",
+  "gui.lockandblock.keycard_reader.remove": "Remove",
   "sounds.lockandblock.beep_success": "Successful beep",
   "sounds.lockandblock.beep_error": "Error beep",
   "death.attack.tesla_coil": "%s encountered high voltage"

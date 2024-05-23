@@ -1,16 +1,21 @@
 package com.andersmmg.lockandblock.block.custom;
 
+import com.andersmmg.falloutstuff.client.screen.KeycardReaderScreen;
 import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.block.entity.KeycardReaderBlockEntity;
 import com.andersmmg.lockandblock.item.ModItems;
 import com.andersmmg.lockandblock.item.custom.KeycardItem;
 import com.andersmmg.lockandblock.sounds.ModSounds;
 import com.andersmmg.lockandblock.util.VoxelUtils;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
@@ -167,5 +172,32 @@ public class KeycardReaderBlock extends BlockWithEntity {
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new KeycardReaderBlockEntity(pos, state);
+    }
+
+    public void edit(ItemUsageContext context) {
+        if (context.getWorld().getBlockState(context.getBlockPos()).get(POWERED)) {
+            return;
+        }
+        if (context.getWorld().isClient()) {
+            this.showEditScreen(context);
+        }
+    }
+
+
+    @Environment(EnvType.CLIENT)
+    public void showEditScreen(ItemUsageContext context) {
+        BlockEntity blockEntity = context.getWorld().getBlockEntity(context.getBlockPos());
+        if (blockEntity == null) {
+            return;
+        }
+        if (blockEntity instanceof KeycardReaderBlockEntity keycardReaderBlockEntity) {
+            ItemStack stack = context.getPlayer().getStackInHand(context.getHand());
+            if (!keycardReaderBlockEntity.checkKeycard(stack)) {
+                return;
+            }
+            String uuid = KeycardItem.getUuid(context.getPlayer().getStackInHand(context.getHand()));
+            KeycardReaderScreen screen = new KeycardReaderScreen(keycardReaderBlockEntity, uuid);
+            MinecraftClient.getInstance().setScreen(screen);
+        }
     }
 }
