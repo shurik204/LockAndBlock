@@ -17,6 +17,7 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         registerActivatable(blockStateModelGenerator, ModBlocks.KEYCARD_READER);
+        registerActivatable(blockStateModelGenerator, ModBlocks.KEYPAD);
         registerRotatable(blockStateModelGenerator, ModBlocks.KEYCARD_WRITER);
         registerRotatable(blockStateModelGenerator, ModBlocks.KEYCARD_CLONER);
         registerTeslaCoil(blockStateModelGenerator, ModBlocks.TESLA_COIL);

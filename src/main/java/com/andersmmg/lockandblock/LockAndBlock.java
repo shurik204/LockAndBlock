@@ -2,11 +2,13 @@ package com.andersmmg.lockandblock;
 
 import com.andersmmg.lockandblock.block.ModBlocks;
 import com.andersmmg.lockandblock.block.entity.KeycardReaderBlockEntity;
+import com.andersmmg.lockandblock.block.entity.KeypadBlockEntity;
 import com.andersmmg.lockandblock.block.entity.ModBlockEntities;
 import com.andersmmg.lockandblock.config.ModConfig;
 import com.andersmmg.lockandblock.item.ModItemGroups;
 import com.andersmmg.lockandblock.item.ModItems;
 import com.andersmmg.lockandblock.record.KeycardReaderPacket;
+import com.andersmmg.lockandblock.record.KeypadCodePacket;
 import com.andersmmg.lockandblock.sounds.ModSounds;
 import io.wispforest.owo.network.OwoNetChannel;
 import net.fabricmc.api.ModInitializer;
@@ -29,6 +31,7 @@ public class LockAndBlock implements ModInitializer {
     public static final String CARD_UUID_KEY = "card_uuid";
 
     public static final OwoNetChannel KEYCARD_READER_CHANNEL = OwoNetChannel.create(id("keycard_reader"));
+    public static final OwoNetChannel KEYPAD_CODE_CHANNEL = OwoNetChannel.create(id("keypad_code"));
 
     public static final RegistryKey<DamageType> TESLA_COIL_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, id("tesla_coil_damage_type"));
 
@@ -56,7 +59,6 @@ public class LockAndBlock implements ModInitializer {
         ModBlockEntities.registerBlockEntities();
         ModSounds.registerSounds();
 
-        // Register sign update packet
         KEYCARD_READER_CHANNEL.registerServerbound(KeycardReaderPacket.class, (message, access) -> {
             World world = access.player().getServerWorld();
             BlockEntity blockEntity = world.getBlockEntity(message.pos());
@@ -66,6 +68,13 @@ public class LockAndBlock implements ModInitializer {
                 } else {
                     world.breakBlock(message.pos(), true);
                 }
+            }
+        });
+        KEYPAD_CODE_CHANNEL.registerServerbound(KeypadCodePacket.class, (message, access) -> {
+            World world = access.player().getServerWorld();
+            BlockEntity blockEntity = world.getBlockEntity(message.pos());
+            if (blockEntity instanceof KeypadBlockEntity keypadBlockEntity) {
+                keypadBlockEntity.testCode(message.code());
             }
         });
     }

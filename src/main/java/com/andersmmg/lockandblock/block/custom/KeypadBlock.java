@@ -1,10 +1,7 @@
 package com.andersmmg.lockandblock.block.custom;
 
-import com.andersmmg.lockandblock.LockAndBlock;
-import com.andersmmg.lockandblock.block.entity.KeycardReaderBlockEntity;
-import com.andersmmg.lockandblock.client.screen.KeycardReaderScreen;
-import com.andersmmg.lockandblock.item.ModItems;
-import com.andersmmg.lockandblock.item.custom.KeycardItem;
+import com.andersmmg.lockandblock.block.entity.KeypadBlockEntity;
+import com.andersmmg.lockandblock.client.screen.KeypadScreen;
 import com.andersmmg.lockandblock.sounds.ModSounds;
 import com.andersmmg.lockandblock.util.VoxelUtils;
 import net.fabricmc.api.EnvType;
@@ -14,8 +11,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
@@ -36,14 +31,15 @@ import net.minecraft.world.World;
 import net.minecraft.world.tick.TickPriority;
 import org.jetbrains.annotations.Nullable;
 
-public class KeycardReaderBlock extends BlockWithEntity {
+public class KeypadBlock extends BlockWithEntity {
     public static final BooleanProperty POWERED = Properties.POWERED;
+    public static final BooleanProperty SET = BooleanProperty.of("set");
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(3, 3, 15, 13, 13, 16);
 
-    public KeycardReaderBlock(Settings settings) {
+    public KeypadBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false));
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false).with(SET, false));
     }
 
     protected static Direction getDirection(BlockState state) {
@@ -52,55 +48,23 @@ public class KeycardReaderBlock extends BlockWithEntity {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemStack stack = player.getStackInHand(hand);
-        if (state.get(POWERED)) {
-            return ActionResult.FAIL;
+        if (world.isClient() && !state.get(POWERED)) {
+            showScreen((KeypadBlockEntity) world.getBlockEntity(pos));
         }
-        if (stack.isOf(ModItems.KEYCARD)) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof KeycardReaderBlockEntity keycardReaderBlockEntity) {
-                if (keycardReaderBlockEntity.hasUuid()) {
-                    if (KeycardItem.hasUuid(stack)) {
-                        if (keycardReaderBlockEntity.getUuid().equals(KeycardItem.getUuid(stack))) {
-                            return this.activate(state, world, pos);
-                        } else {
-                            if (!world.isClient) {
-                                world.playSound(null, pos, ModSounds.BEEP_ERROR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                                player.sendMessage(LockAndBlock.langText("wrong_keycard"), true);
-                            }
-                        }
-                    } else {
-                        if (!world.isClient) {
-                            world.playSound(null, pos, ModSounds.BEEP_ERROR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                            player.sendMessage(LockAndBlock.langText("blank_keycard"), true);
-                        }
-                    }
-                } else {
-                    if (KeycardItem.hasUuid(stack)) {
-                        if (!world.isClient) {
-                            keycardReaderBlockEntity.setUuid(KeycardItem.getUuid(stack));
-                            player.sendMessage(LockAndBlock.langText("reader_programmed"), true);
-                            return this.activate(state, world, pos);
-                        }
-                    } else {
-                        if (!world.isClient) {
-                            world.playSound(null, pos, ModSounds.BEEP_ERROR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                            player.sendMessage(LockAndBlock.langText("blank_keycard"), true);
-                        }
-                    }
-                }
-            }
-            return ActionResult.SUCCESS;
-        }
-        return ActionResult.FAIL;
+        return ActionResult.SUCCESS;
     }
 
-    private ActionResult activate(BlockState state, World world, BlockPos pos) {
+    @Environment(EnvType.CLIENT)
+    private void showScreen(KeypadBlockEntity blockEntity) {
+        MinecraftClient.getInstance().setScreen(new KeypadScreen(blockEntity));
+    }
+
+    public ActionResult activate(BlockState state, World world, BlockPos pos) {
         if (!state.get(POWERED)) {
             if (!world.isClient()) {
                 world.playSound(null, pos, ModSounds.BEEP_SUCCESS, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 world.setBlockState(pos, state.with(POWERED, true), 3);
-                world.scheduleBlockTick(pos, this, 20, TickPriority.NORMAL);
+                world.scheduleBlockTick(pos, this, 30, TickPriority.NORMAL);
                 this.updateNeighbors(state, (ServerWorld) world, pos);
             }
             return ActionResult.SUCCESS;
@@ -147,7 +111,7 @@ public class KeycardReaderBlock extends BlockWithEntity {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, POWERED);
+        builder.add(FACING, POWERED, SET);
     }
 
     @Override
@@ -171,33 +135,6 @@ public class KeycardReaderBlock extends BlockWithEntity {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new KeycardReaderBlockEntity(pos, state);
-    }
-
-    public void edit(ItemUsageContext context) {
-        if (context.getWorld().getBlockState(context.getBlockPos()).get(POWERED)) {
-            return;
-        }
-        if (context.getWorld().isClient()) {
-            this.showEditScreen(context);
-        }
-    }
-
-
-    @Environment(EnvType.CLIENT)
-    public void showEditScreen(ItemUsageContext context) {
-        BlockEntity blockEntity = context.getWorld().getBlockEntity(context.getBlockPos());
-        if (blockEntity == null) {
-            return;
-        }
-        if (blockEntity instanceof KeycardReaderBlockEntity keycardReaderBlockEntity) {
-            ItemStack stack = context.getPlayer().getStackInHand(context.getHand());
-            if (!keycardReaderBlockEntity.checkKeycard(stack)) {
-                return;
-            }
-            String uuid = KeycardItem.getUuid(context.getPlayer().getStackInHand(context.getHand()));
-            KeycardReaderScreen screen = new KeycardReaderScreen(keycardReaderBlockEntity, uuid);
-            MinecraftClient.getInstance().setScreen(screen);
-        }
+        return new KeypadBlockEntity(pos, state);
     }
 }

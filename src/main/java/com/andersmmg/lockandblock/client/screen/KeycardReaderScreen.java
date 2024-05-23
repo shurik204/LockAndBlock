@@ -1,4 +1,4 @@
-package com.andersmmg.falloutstuff.client.screen;
+package com.andersmmg.lockandblock.client.screen;
 
 import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.block.entity.KeycardReaderBlockEntity;
