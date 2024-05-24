@@ -21,11 +21,29 @@ public class ModModelProvider extends FabricModelProvider {
         registerRotatable(blockStateModelGenerator, ModBlocks.KEYCARD_WRITER);
         registerRotatable(blockStateModelGenerator, ModBlocks.KEYCARD_CLONER);
         registerTeslaCoil(blockStateModelGenerator, ModBlocks.TESLA_COIL);
+        registerForceField(blockStateModelGenerator, ModBlocks.FORCEFIELD);
+        registerForceFieldGenerator(blockStateModelGenerator, ModBlocks.FORCEFIELD_GENERATOR, TexturedModel.ORIENTABLE);
     }
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(ModItems.KEYCARD, Models.GENERATED);
+    }
+
+    private void registerForceField(BlockStateModelGenerator blockStateModelGenerator, Block block) {
+        Identifier model_base = ModelIds.getBlockModelId(block);
+        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block, BlockStateVariant.create().put(VariantSettings.MODEL, model_base)));
+    }
+
+    public final void registerForceFieldGenerator(BlockStateModelGenerator blockStateModelGenerator, Block block, TexturedModel.Factory modelFactory) {
+        Identifier identifier = modelFactory.upload(block, blockStateModelGenerator.modelCollector);
+        Identifier identifier2 = TextureMap.getSubId(block, "_front_on");
+        Identifier identifier3 = modelFactory.get(block).textures((textures) -> {
+            textures.put(TextureKey.FRONT, identifier2);
+        }).upload(block, "_on", blockStateModelGenerator.modelCollector);
+        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block)
+                .coordinate(BlockStateModelGenerator.createBooleanModelMap(Properties.POWERED, identifier3, identifier))
+                .coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
     }
 
     private void registerRotatable(BlockStateModelGenerator blockStateModelGenerator, Block block) {

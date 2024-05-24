@@ -12,4 +12,6 @@ public class ModConfigModel {
     public float teslaCoilDamage = 3.0f;
     @RangeConstraint(min = 1.0f, max = 10.0f)
     public float teslaCoilRange = 2.0f;
+    @RangeConstraint(min = 3, max = 20)
+    public int maxForceFieldLength = 7;
 }

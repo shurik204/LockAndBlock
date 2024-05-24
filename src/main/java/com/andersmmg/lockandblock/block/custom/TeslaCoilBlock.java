@@ -63,6 +63,12 @@ public class TeslaCoilBlock extends Block {
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
         world.scheduleBlockTick(pos, this, 10, TickPriority.NORMAL);
+        if (!world.isClient) {
+            boolean bl = state.get(POWERED);
+            if (bl != world.isReceivingRedstonePower(pos)) {
+                world.setBlockState(pos, state.cycle(POWERED), 2);
+            }
+        }
     }
 
     @Override

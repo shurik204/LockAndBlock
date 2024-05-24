@@ -23,6 +23,10 @@ public class ModBlocks {
             new TeslaCoilBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
     public static final Block KEYPAD = registerBlock("keypad",
             new KeypadBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
+    public static final Block FORCEFIELD_GENERATOR = registerBlock("forcefield_generator",
+            new ForceFieldGeneratorBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
+    public static final Block FORCEFIELD = registerBlockOnly("forcefield",
+            new ForceFieldBlock(FabricBlockSettings.create().nonOpaque().hardness(-1).notSolid().luminance(2)));
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);

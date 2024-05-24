@@ -5,6 +5,7 @@
   "block.lockandblock.keycard_cloner": "Keycard Cloner",
   "block.lockandblock.tesla_coil": "Tesla Coil",
   "block.lockandblock.keypad": "Keypad",
+  "block.lockandblock.forcefield_generator": "Force Field Generator",
   "itemGroup.lockandblock.item_group": "Lock & Block",
   "text.lockandblock.wrong_keycard": "Access denied.",
   "text.lockandblock.blank_keycard": "Blank keycard detected.",
