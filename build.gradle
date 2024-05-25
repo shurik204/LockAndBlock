@@ -88,6 +88,11 @@ jar {
     from("LICENSE") {
         rename { "${it}_${project.archivesBaseName}"}
     }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+sourcesJar {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 // configure the maven publication
