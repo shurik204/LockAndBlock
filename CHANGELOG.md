@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+- Game no longer pauses when entering in keypad or configuring card reader
+
 ## [0.3.0] - 2024-05-24
 
 ### Added
