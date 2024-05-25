@@ -1,0 +1,6 @@
+{
+  "parent": "lockandblock:block/player_sensor",
+  "textures": {
+    "0": "lockandblock:block/player_sensor_on"
+  }
+}

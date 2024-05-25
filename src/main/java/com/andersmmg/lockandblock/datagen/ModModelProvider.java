@@ -20,9 +20,10 @@ public class ModModelProvider extends FabricModelProvider {
         registerActivatable(blockStateModelGenerator, ModBlocks.KEYPAD);
         registerRotatable(blockStateModelGenerator, ModBlocks.KEYCARD_WRITER);
         registerRotatable(blockStateModelGenerator, ModBlocks.KEYCARD_CLONER);
-        registerTeslaCoil(blockStateModelGenerator, ModBlocks.TESLA_COIL);
+        registerRotatablePowered(blockStateModelGenerator, ModBlocks.TESLA_COIL);
         registerForceField(blockStateModelGenerator, ModBlocks.FORCEFIELD);
         registerForceFieldGenerator(blockStateModelGenerator, ModBlocks.FORCEFIELD_GENERATOR, TexturedModel.ORIENTABLE);
+        registerRotatablePowered(blockStateModelGenerator, ModBlocks.PLAYER_SENSOR);
     }
 
     @Override
@@ -44,6 +45,14 @@ public class ModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block)
                 .coordinate(BlockStateModelGenerator.createBooleanModelMap(Properties.POWERED, identifier3, identifier))
                 .coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
+    }
+
+    private void registerRotatablePowered(BlockStateModelGenerator blockStateModelGenerator, Block block) {
+        Identifier model_base = ModelIds.getBlockModelId(block);
+        Identifier model_powered = ModelIds.getBlockSubModelId(block, "_powered");
+        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block, BlockStateVariant.create().put(VariantSettings.MODEL, model_base))
+                .coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates())
+                .coordinate(BlockStateModelGenerator.createBooleanModelMap(Properties.POWERED, model_powered, model_base)));
     }
 
     private void registerRotatable(BlockStateModelGenerator blockStateModelGenerator, Block block) {

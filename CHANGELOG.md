@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- Player sensor
+
 ### Changed
 
 ### Deprecated
@@ -15,7 +17,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
-- Game no longer pauses when entering in keypad or configuring card reader
+- Game pausing when using keypad or configuring card reader
+- Missing config screen translations
 
 ## [0.3.0] - 2024-05-24
 

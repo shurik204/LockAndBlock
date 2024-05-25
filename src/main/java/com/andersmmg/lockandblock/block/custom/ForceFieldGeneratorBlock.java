@@ -66,7 +66,7 @@ public class ForceFieldGeneratorBlock extends Block {
         if (world.isClient()) return;
         LockAndBlock.LOGGER.debug("scheduledTick: " + pos);
         if (state.get(POWERED)) {
-            for (int i = 1; i <= LockAndBlock.CONFIG.maxForceFieldLength(); i++) {
+            for (int i = 1; i <= LockAndBlock.CONFIG.maxForceFieldLength() + 1; i++) {
                 BlockState blockState = world.getBlockState(pos.offset(state.get(FACING), i));
                 if (blockState.getBlock() instanceof ForceFieldGeneratorBlock) {
                     if (blockState.get(FACING) == state.get(FACING).getOpposite()) {

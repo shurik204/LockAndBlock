@@ -27,6 +27,8 @@ public class ModBlocks {
             new ForceFieldGeneratorBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
     public static final Block FORCEFIELD = registerBlockOnly("forcefield",
             new ForceFieldBlock(FabricBlockSettings.create().nonOpaque().hardness(-1).notSolid().luminance(2)));
+    public static final Block PLAYER_SENSOR = registerBlock("player_sensor",
+            new PlayerSensorBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
