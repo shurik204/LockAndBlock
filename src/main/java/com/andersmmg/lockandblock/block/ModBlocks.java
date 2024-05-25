@@ -33,6 +33,8 @@ public class ModBlocks {
             new ProxMineBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
     public static final Block LAND_MINE = registerBlock("land_mine",
             new LandMineBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
+    public static final Block TRIP_MINE = registerBlock("trip_mine",
+            new TripMineBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);

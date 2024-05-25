@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 
 - Player sensor
+- Laser trip mines
+- Proximity mines
+- Land mines
 
 ### Changed
 

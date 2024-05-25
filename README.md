@@ -18,6 +18,8 @@ Lock & Block introduces fun and creative security features to protect your Minec
 - **Keypads:** Set a secret code to emit redstone; open doors or do whatever you need to secure
 - **Tesla Coil:** Protect areas by zapping anyone nearby when powered by redstone
 - **Force fields:** Create an unbreakable wall that you can disable and enable at will
+- **Mines:** Protect you stuff with explosives, using laser trip mines, land mines, and proximity mines
+- **Player Sensor:** Detect when a player is near and trigger a redstone contraption
 
 ### Requirements:
 
@@ -35,9 +37,9 @@ Lock & Block introduces fun and creative security features to protect your Minec
 
 ### Planned Possible Features:
 
-- Motion sensor
 - Lockable doors
 - Crafting recipes
+- Remotely triggered mines
 
 Please note that these features are planned possibilities and not guaranteed. As a solo developer, I'll do my best to
 implement them, but development priorities may change.

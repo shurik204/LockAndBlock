@@ -27,6 +27,7 @@ public class ModModelProvider extends FabricModelProvider {
         registerRotatablePowered(blockStateModelGenerator, ModBlocks.PLAYER_SENSOR);
         registerMine(blockStateModelGenerator, ModBlocks.PROX_MINE);
         registerMine(blockStateModelGenerator, ModBlocks.LAND_MINE);
+        registerMine(blockStateModelGenerator, ModBlocks.TRIP_MINE);
     }
 
     @Override
