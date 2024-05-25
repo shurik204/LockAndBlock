@@ -41,6 +41,11 @@ public class KeypadScreen extends BaseOwoScreen<FlowLayout> {
     }
 
     @Override
+    public boolean shouldPause() {
+        return false;
+    }
+
+    @Override
     protected void build(FlowLayout rootComponent) {
         textBox.active = false;
 

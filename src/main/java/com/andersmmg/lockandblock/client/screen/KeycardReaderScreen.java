@@ -29,6 +29,11 @@ public class KeycardReaderScreen extends BaseOwoScreen<FlowLayout> {
     }
 
     @Override
+    public boolean shouldPause() {
+        return false;
+    }
+
+    @Override
     protected void build(FlowLayout rootComponent) {
         rootComponent
                 .surface(Surface.VANILLA_TRANSLUCENT)
