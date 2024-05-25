@@ -7,17 +7,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- Force Field Generator
-
 ### Changed
-
-- Keycards can now be dyed any color
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [0.3.0] - 2024-05-24
+
+### Added
+
+- Force Field Generator
+
+### Changed
+
+- Keycards can now be dyed any color
 
 ## [0.2.0] - 2024-05-23
 
@@ -40,7 +46,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Keycard writer
 - Keycard cloner
 
-[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.3.0...HEAD
 
+[0.3.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.0.0...v0.1.0
