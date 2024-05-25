@@ -29,59 +29,47 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class PlayerSensorBlock extends Block {
+public class ProxMineBlock extends Block {
     public static final DirectionProperty FACING = Properties.FACING;
-    public static final BooleanProperty POWERED = Properties.POWERED;
+    public static final BooleanProperty SET = LockAndBlock.SET;
     private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(5, 5, 14, 11, 11, 16);
     private static final VoxelShape VOXEL_SHAPE_UP = Block.createCuboidShape(5, 0, 5, 11, 2, 11);
     private static final VoxelShape VOXEL_SHAPE_DOWN = Block.createCuboidShape(5, 14, 5, 11, 16, 11);
 
-    public PlayerSensorBlock(Settings settings) {
-        super(settings.luminance((state) -> state.get(POWERED) ? 3 : 0));
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false));
+    public ProxMineBlock(Settings settings) {
+        super(settings);
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false));
     }
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
-        world.scheduleBlockTick(pos, this, 3, TickPriority.NORMAL);
+        world.scheduleBlockTick(pos, this, 40, TickPriority.NORMAL);
     }
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (world != null && !world.isClient) {
-            boolean shouldPower = this.shouldPower(world, pos, state);
-            if (shouldPower != state.get(Properties.POWERED)) {
-                world.setBlockState(pos, state.with(Properties.POWERED, shouldPower), 3);
-                state.updateNeighbors(world, pos, 3);
-                world.updateNeighborsAlways(pos.down(), state.getBlock());
+            if (state.get(SET)) {
+                boolean shouldPower = this.shouldPower(world, pos, state);
+                if (shouldPower) {
+                    world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 2.0f, World.ExplosionSourceType.NONE);
+                    world.removeBlock(pos, false);
+                }
+            } else {
+                world.setBlockState(pos, state.with(SET, true), 3);
             }
         }
         world.scheduleBlockTick(pos, this, 3, TickPriority.byIndex(1));
     }
 
     private boolean shouldPower(World world, BlockPos pos, BlockState state) {
-        Direction direction = state.get(PlayerSensorBlock.FACING);
-        BlockPos frontPos = pos.offset(direction, 1);
-        Box detectionBox = new Box(frontPos).expand(LockAndBlock.CONFIG.playerSensorRange() - 1.0f);
+        Direction direction = state.get(ProxMineBlock.FACING);
+//        BlockPos frontPos = pos.offset(direction);
+        Box detectionBox = new Box(pos).expand(2.0f);
 
         List<PlayerEntity> players = world.getEntitiesByClass(PlayerEntity.class, detectionBox, player -> true);
         return !players.isEmpty();
-    }
-
-    @Override
-    public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        return state.get(POWERED) ? 15 : 0;
-    }
-
-    @Override
-    public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        return state.get(POWERED) ? 15 : 0;
-    }
-
-    @Override
-    public boolean emitsRedstonePower(BlockState state) {
-        return true;
     }
 
     protected static Direction getDirection(BlockState state) {
@@ -114,7 +102,7 @@ public class PlayerSensorBlock extends Block {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, POWERED);
+        builder.add(FACING, SET);
     }
 
     @Override

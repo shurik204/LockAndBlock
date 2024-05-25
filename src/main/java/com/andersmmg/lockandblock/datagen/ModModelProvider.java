@@ -1,5 +1,6 @@
 package com.andersmmg.lockandblock.datagen;
 
+import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.block.ModBlocks;
 import com.andersmmg.lockandblock.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -24,6 +25,8 @@ public class ModModelProvider extends FabricModelProvider {
         registerForceField(blockStateModelGenerator, ModBlocks.FORCEFIELD);
         registerForceFieldGenerator(blockStateModelGenerator, ModBlocks.FORCEFIELD_GENERATOR, TexturedModel.ORIENTABLE);
         registerRotatablePowered(blockStateModelGenerator, ModBlocks.PLAYER_SENSOR);
+        registerMine(blockStateModelGenerator, ModBlocks.PROX_MINE);
+        registerMine(blockStateModelGenerator, ModBlocks.LAND_MINE);
     }
 
     @Override
@@ -47,6 +50,14 @@ public class ModModelProvider extends FabricModelProvider {
                 .coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
     }
 
+    private void registerMine(BlockStateModelGenerator blockStateModelGenerator, Block block) {
+        Identifier model_base = ModelIds.getBlockModelId(block);
+        Identifier model_set = ModelIds.getBlockSubModelId(block, "_set");
+        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block, BlockStateVariant.create().put(VariantSettings.MODEL, model_base))
+                .coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates())
+                .coordinate(BlockStateModelGenerator.createBooleanModelMap(LockAndBlock.SET, model_set, model_base)));
+    }
+
     private void registerRotatablePowered(BlockStateModelGenerator blockStateModelGenerator, Block block) {
         Identifier model_base = ModelIds.getBlockModelId(block);
         Identifier model_powered = ModelIds.getBlockSubModelId(block, "_powered");
@@ -59,14 +70,6 @@ public class ModModelProvider extends FabricModelProvider {
         Identifier model_base = ModelIds.getBlockModelId(block);
         blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block, BlockStateVariant.create().put(VariantSettings.MODEL, model_base))
                 .coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));
-    }
-
-    private void registerTeslaCoil(BlockStateModelGenerator blockStateModelGenerator, Block block) {
-        Identifier model_base = ModelIds.getBlockModelId(block);
-        Identifier model_powered = ModelIds.getBlockSubModelId(block, "_powered");
-        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block, BlockStateVariant.create().put(VariantSettings.MODEL, model_base))
-                .coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates())
-                .coordinate(BlockStateModelGenerator.createBooleanModelMap(Properties.POWERED, model_powered, model_base)));
     }
 
     private void registerActivatable(BlockStateModelGenerator blockStateModelGenerator, Block block) {

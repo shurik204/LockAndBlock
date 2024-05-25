@@ -17,6 +17,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -29,6 +30,7 @@ public class LockAndBlock implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final ModConfig CONFIG = ModConfig.createAndLoad();
     public static final String CARD_UUID_KEY = "card_uuid";
+    public static final BooleanProperty SET = BooleanProperty.of("set");
 
     public static final OwoNetChannel KEYCARD_READER_CHANNEL = OwoNetChannel.create(id("keycard_reader"));
     public static final OwoNetChannel KEYPAD_CODE_CHANNEL = OwoNetChannel.create(id("keypad_code"));

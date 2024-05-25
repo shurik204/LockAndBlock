@@ -1,7 +1,6 @@
 package com.andersmmg.lockandblock.block.custom;
 
 import com.andersmmg.lockandblock.LockAndBlock;
-import com.andersmmg.lockandblock.util.VoxelUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -24,64 +23,58 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.tick.TickPriority;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class PlayerSensorBlock extends Block {
+public class LandMineBlock extends Block {
     public static final DirectionProperty FACING = Properties.FACING;
-    public static final BooleanProperty POWERED = Properties.POWERED;
-    private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(5, 5, 14, 11, 11, 16);
-    private static final VoxelShape VOXEL_SHAPE_UP = Block.createCuboidShape(5, 0, 5, 11, 2, 11);
-    private static final VoxelShape VOXEL_SHAPE_DOWN = Block.createCuboidShape(5, 14, 5, 11, 16, 11);
+    public static final BooleanProperty SET = LockAndBlock.SET;
+    private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(5, 0, 5, 11, 2, 11);
+    private static final VoxelShape VOXEL_SHAPE_SET = Block.createCuboidShape(5, 0, 5, 11, 1, 11);
 
-    public PlayerSensorBlock(Settings settings) {
-        super(settings.luminance((state) -> state.get(POWERED) ? 3 : 0));
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false));
+    public LandMineBlock(Settings settings) {
+        super(settings);
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false));
     }
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
-        world.scheduleBlockTick(pos, this, 3, TickPriority.NORMAL);
+        world.scheduleBlockTick(pos, this, 40, TickPriority.NORMAL);
     }
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (world != null && !world.isClient) {
-            boolean shouldPower = this.shouldPower(world, pos, state);
-            if (shouldPower != state.get(Properties.POWERED)) {
-                world.setBlockState(pos, state.with(Properties.POWERED, shouldPower), 3);
-                state.updateNeighbors(world, pos, 3);
-                world.updateNeighborsAlways(pos.down(), state.getBlock());
+            if (state.get(SET)) {
+                boolean shouldPower = this.shouldPower(world, pos, state);
+                if (shouldPower) {
+                    world.removeBlock(pos, false);
+                    world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 1.5f, World.ExplosionSourceType.BLOCK);
+                }
+            } else {
+                world.setBlockState(pos, state.with(SET, true), 3);
             }
         }
         world.scheduleBlockTick(pos, this, 3, TickPriority.byIndex(1));
     }
 
+    @Override
+    public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
+        if (world.isClient)
+            return;
+        world.removeBlock(pos, false);
+        world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 1.5f, World.ExplosionSourceType.BLOCK);
+    }
+
     private boolean shouldPower(World world, BlockPos pos, BlockState state) {
-        Direction direction = state.get(PlayerSensorBlock.FACING);
-        BlockPos frontPos = pos.offset(direction, 1);
-        Box detectionBox = new Box(frontPos).expand(LockAndBlock.CONFIG.playerSensorRange() - 1.0f);
+        Box detectionBox = new Box(pos);
 
         List<PlayerEntity> players = world.getEntitiesByClass(PlayerEntity.class, detectionBox, player -> true);
         return !players.isEmpty();
-    }
-
-    @Override
-    public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        return state.get(POWERED) ? 15 : 0;
-    }
-
-    @Override
-    public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        return state.get(POWERED) ? 15 : 0;
-    }
-
-    @Override
-    public boolean emitsRedstonePower(BlockState state) {
-        return true;
     }
 
     protected static Direction getDirection(BlockState state) {
@@ -105,20 +98,22 @@ public class PlayerSensorBlock extends Block {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return switch (getDirection(state)) {
-            case UP -> VOXEL_SHAPE_UP;
-            case DOWN -> VOXEL_SHAPE_DOWN;
-            default -> VoxelUtils.rotateShape(getDirection(state), VOXEL_SHAPE);
-        };
+        if (state.get(SET)) {
+            return VOXEL_SHAPE_SET;
+        }
+        return VOXEL_SHAPE;
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, POWERED);
+        builder.add(FACING, SET);
     }
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getSide());
+        if (ctx.getSide() == Direction.UP) {
+            return this.getDefaultState().with(FACING, Direction.UP);
+        }
+        return null;
     }
 }

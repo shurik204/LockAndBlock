@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,set=false": {
+      "model": "lockandblock:block/prox_mine",
+      "x": 90
+    },
+    "facing=down,set=true": {
+      "model": "lockandblock:block/prox_mine_set",
+      "x": 90
+    },
+    "facing=east,set=false": {
+      "model": "lockandblock:block/prox_mine",
+      "y": 90
+    },
+    "facing=east,set=true": {
+      "model": "lockandblock:block/prox_mine_set",
+      "y": 90
+    },
+    "facing=north,set=false": {
+      "model": "lockandblock:block/prox_mine"
+    },
+    "facing=north,set=true": {
+      "model": "lockandblock:block/prox_mine_set"
+    },
+    "facing=south,set=false": {
+      "model": "lockandblock:block/prox_mine",
+      "y": 180
+    },
+    "facing=south,set=true": {
+      "model": "lockandblock:block/prox_mine_set",
+      "y": 180
+    },
+    "facing=up,set=false": {
+      "model": "lockandblock:block/prox_mine",
+      "x": 270
+    },
+    "facing=up,set=true": {
+      "model": "lockandblock:block/prox_mine_set",
+      "x": 270
+    },
+    "facing=west,set=false": {
+      "model": "lockandblock:block/prox_mine",
+      "y": 270
+    },
+    "facing=west,set=true": {
+      "model": "lockandblock:block/prox_mine_set",
+      "y": 270
+    }
+  }
+}
