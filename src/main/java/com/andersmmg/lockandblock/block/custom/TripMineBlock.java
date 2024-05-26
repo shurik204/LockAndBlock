@@ -4,7 +4,6 @@ import com.andersmmg.lockandblock.LockAndBlock;
 import com.andersmmg.lockandblock.util.VoxelUtils;
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DustParticleEffect;
@@ -62,7 +61,7 @@ public class TripMineBlock extends Block {
 
     private boolean shouldPower(World world, BlockPos pos, BlockState state) {
         Direction direction = state.get(TripMineBlock.FACING);
-        int distance = 0;
+        int distance = LockAndBlock.CONFIG.allowTripMinesAir() ? LockAndBlock.CONFIG.maxTripMineDistance() + 1 : 0;
 
         for (int i = 1; i <= LockAndBlock.CONFIG.maxTripMineDistance() + 1; i++) {
             BlockState blockState = world.getBlockState(pos.offset(direction, i));
@@ -84,8 +83,8 @@ public class TripMineBlock extends Block {
         // check if there are players in the area
         Box detectionBox = new Box(pos).expand(direction.getOffsetX() * distance, direction.getOffsetY() * distance, direction.getOffsetZ() * distance);
 
-        List<PlayerEntity> players = world.getEntitiesByClass(PlayerEntity.class, detectionBox, player -> true);
-        return !players.isEmpty();
+        List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, detectionBox, entity -> true);
+        return !entities.isEmpty();
     }
 
     private static void spawnParticles(BlockState state, World world, BlockPos pos, float alpha) {

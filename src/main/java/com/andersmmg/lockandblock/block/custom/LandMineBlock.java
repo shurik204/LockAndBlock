@@ -6,7 +6,6 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -73,8 +72,8 @@ public class LandMineBlock extends Block {
     private boolean shouldPower(World world, BlockPos pos, BlockState state) {
         Box detectionBox = new Box(pos);
 
-        List<PlayerEntity> players = world.getEntitiesByClass(PlayerEntity.class, detectionBox, player -> true);
-        return !players.isEmpty();
+        List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, detectionBox, player -> true);
+        return !entities.isEmpty();
     }
 
     protected static Direction getDirection(BlockState state) {

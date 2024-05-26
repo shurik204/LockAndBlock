@@ -18,4 +18,6 @@ public class ModConfigModel {
     public float playerSensorRange = 4.0f;
     @RangeConstraint(min = 3, max = 30)
     public int maxTripMineDistance = 7;
+
+    public boolean allowTripMinesAir = true;
 }

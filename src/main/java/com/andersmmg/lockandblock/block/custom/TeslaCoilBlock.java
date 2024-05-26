@@ -7,7 +7,6 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -77,11 +76,11 @@ public class TeslaCoilBlock extends Block {
         if (state.get(POWERED)) {
             Box detectionBox = new Box(pos).expand(LockAndBlock.CONFIG.teslaCoilRange());
 
-            List<PlayerEntity> players = world.getEntitiesByClass(PlayerEntity.class, detectionBox, player -> true);
+            List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, detectionBox, player -> true);
 
-            for (PlayerEntity player : players) {
-                if (player.canTakeDamage())
-                    player.damage(LockAndBlock.damageOf(world, LockAndBlock.TESLA_COIL_DAMAGE), LockAndBlock.CONFIG.teslaCoilDamage());
+            for (LivingEntity entity : entities) {
+                if (entity.canTakeDamage())
+                    entity.damage(LockAndBlock.damageOf(world, LockAndBlock.TESLA_COIL_DAMAGE), LockAndBlock.CONFIG.teslaCoilDamage());
             }
         }
         world.scheduleBlockTick(pos, this, random.nextBetween(10, 20), TickPriority.byIndex(1));
