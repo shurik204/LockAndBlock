@@ -38,7 +38,6 @@ Lock & Block introduces fun and creative security features to protect your Minec
 ### Planned Possible Features:
 
 - Lockable doors
-- Crafting recipes
 - Remotely triggered mines
 
 Please note that these features are planned possibilities and not guaranteed. As a solo developer, I'll do my best to
