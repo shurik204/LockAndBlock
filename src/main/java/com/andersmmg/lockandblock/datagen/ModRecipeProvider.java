@@ -1,8 +1,16 @@
 package com.andersmmg.lockandblock.datagen;
 
+import com.andersmmg.lockandblock.block.ModBlocks;
+import com.andersmmg.lockandblock.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
+import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
+import net.minecraft.item.Items;
+import net.minecraft.recipe.book.RecipeCategory;
+import net.minecraft.registry.tag.ItemTags;
 
 import java.util.function.Consumer;
 
@@ -14,6 +22,99 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     @Override
     public void generate(Consumer<RecipeJsonProvider> exporter) {
-
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.FORCEFIELD_GENERATOR, 2)
+                .pattern("rSr")
+                .pattern("SnS")
+                .pattern("rSr")
+                .input('n', Items.NETHER_STAR)
+                .input('S', Blocks.STONE)
+                .input('r', Items.REDSTONE)
+                .criterion("has_item", conditionsFromItem(Blocks.REDSTONE_BLOCK))
+                .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.TESLA_COIL, 2)
+                .pattern("III")
+                .pattern(" c ")
+                .pattern("rCr")
+                .input('I', Blocks.IRON_BLOCK)
+                .input('c', Items.COPPER_INGOT)
+                .input('r', Items.REDSTONE)
+                .input('C', Blocks.COPPER_BLOCK)
+                .criterion(hasItem(Blocks.IRON_BLOCK), conditionsFromItem(Blocks.IRON_BLOCK))
+                .criterion(hasItem(Items.COPPER_INGOT), conditionsFromItem(Items.COPPER_INGOT))
+                .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.KEYPAD)
+                .pattern("ici")
+                .pattern(" R ")
+                .pattern("i i")
+                .input('i', Items.IRON_INGOT)
+                .input('c', Items.COPPER_INGOT)
+                .input('R', Items.REDSTONE)
+                .criterion("has_item", conditionsFromItem(ModItems.KEYCARD))
+                .offerTo(exporter);
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.KEYCARD_READER)
+                .input(ModBlocks.KEYPAD)
+                .input(Items.COPPER_INGOT)
+                .criterion("has_item", conditionsFromItem(ModItems.KEYCARD))
+                .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.KEYCARD_WRITER)
+                .pattern("i i")
+                .pattern("cRc")
+                .pattern("i i")
+                .input('i', Items.IRON_INGOT)
+                .input('c', Items.COPPER_INGOT)
+                .input('R', Items.REDSTONE)
+                .criterion("has_item", conditionsFromItem(ModItems.KEYCARD))
+                .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.KEYCARD_CLONER)
+                .pattern("i i")
+                .pattern("cRc")
+                .pattern("iki")
+                .input('i', Items.IRON_INGOT)
+                .input('c', Items.COPPER_INGOT)
+                .input('R', Items.REDSTONE)
+                .input('k', ModItems.KEYCARD)
+                .criterion("has_item", conditionsFromItem(ModItems.KEYCARD))
+                .offerTo(exporter);
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.TOOLS, ModItems.KEYCARD)
+                .input(Items.PAPER)
+                .input(Items.BLACK_DYE)
+                .input(Items.REDSTONE)
+                .criterion("has_item", conditionsFromItem(Items.PAPER))
+                .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.PLAYER_SENSOR)
+                .pattern(" c ")
+                .pattern("REG")
+                .pattern(" c ")
+                .input('c', Items.COPPER_INGOT)
+                .input('R', Items.REDSTONE)
+                .input('E', Items.ENDER_PEARL)
+                .input('G', Blocks.GLASS_PANE)
+                .criterion("has_item", conditionsFromItem(Items.ENDER_PEARL))
+                .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModBlocks.LAND_MINE, 2)
+                .pattern(" p ")
+                .pattern("cTc")
+                .input('p', ItemTags.WOODEN_PRESSURE_PLATES)
+                .input('T', Blocks.TNT)
+                .input('c', Items.COPPER_INGOT)
+                .criterion("has_item", conditionsFromItem(Blocks.TNT))
+                .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModBlocks.TRIP_MINE, 2)
+                .pattern("ii ")
+                .pattern("TPG")
+                .pattern("ii ")
+                .input('i', Items.IRON_INGOT)
+                .input('T', Blocks.TNT)
+                .input('P', Items.PRISMARINE_SHARD)
+                .input('G', Blocks.GREEN_STAINED_GLASS_PANE)
+                .criterion(hasItem(Blocks.TNT), conditionsFromItem(Blocks.TNT))
+                .criterion(hasItem(Items.PRISMARINE_SHARD), conditionsFromItem(Items.PRISMARINE_SHARD))
+                .offerTo(exporter);
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModBlocks.PROX_MINE)
+                .input(ModBlocks.PLAYER_SENSOR)
+                .input(Blocks.TNT)
+                .input(Items.COPPER_INGOT)
+                .criterion("has_item", conditionsFromItem(ModBlocks.PLAYER_SENSOR))
+                .offerTo(exporter);
     }
 }

@@ -7,9 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- Crafting recipes for items and blocks
+
 ### Changed
 
 - Trip mines, land mines, and tesla coils now work with non-player entities
+- Blocks should all drop themselves on break now
 - Slightly increased trip mine explosion power
 
 ### Deprecated

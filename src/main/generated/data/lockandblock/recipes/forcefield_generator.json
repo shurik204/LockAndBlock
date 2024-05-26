@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "n": {
+      "item": "minecraft:nether_star"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "rSr",
+    "SnS",
+    "rSr"
+  ],
+  "result": {
+    "count": 2,
+    "item": "lockandblock:forcefield_generator"
+  },
+  "show_notification": true
+}
