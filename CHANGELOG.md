@@ -7,6 +7,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [0.4.1] - 2024-05-26
+
+### Added
+
 - Crafting recipes for items and blocks
 
 ### Changed
@@ -14,12 +26,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Trip mines, land mines, and tesla coils now work with non-player entities
 - Blocks should all drop themselves on break now
 - Slightly increased trip mine explosion power
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [0.4.0] - 2024-05-25
 
@@ -66,8 +72,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Keycard writer
 - Keycard cloner
 
-[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.4.1...HEAD
 
+[0.4.1]: https://github.com/andersmmg/LockAndBlock/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.1.0...v0.2.0
