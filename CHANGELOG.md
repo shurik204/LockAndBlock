@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - Trip mines, land mines, and tesla coils now work with non-player entities
+- Slightly increased trip mine explosion power
 
 ### Deprecated
 

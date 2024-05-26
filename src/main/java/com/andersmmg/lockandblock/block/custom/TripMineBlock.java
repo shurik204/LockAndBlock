@@ -50,7 +50,7 @@ public class TripMineBlock extends Block {
         if (state.get(SET)) {
             boolean shouldPower = this.shouldPower(world, pos, state);
             if (shouldPower) {
-                world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 2.0f, World.ExplosionSourceType.NONE);
+                world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 3.0f, World.ExplosionSourceType.NONE);
                 world.removeBlock(pos, false);
             }
         } else {
