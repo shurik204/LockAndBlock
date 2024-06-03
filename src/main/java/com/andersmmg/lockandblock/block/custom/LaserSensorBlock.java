@@ -27,31 +27,32 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TripMineBlock extends Block {
+public class LaserSensorBlock extends Block {
     public static final DirectionProperty FACING = Properties.FACING;
     public static final BooleanProperty SET = LockAndBlock.SET;
-    private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(5, 5, 14, 11, 11, 16);
-    private static final VoxelShape VOXEL_SHAPE_UP = Block.createCuboidShape(5, 0, 5, 11, 2, 11);
-    private static final VoxelShape VOXEL_SHAPE_DOWN = Block.createCuboidShape(5, 14, 5, 11, 16, 11);
+    public static final BooleanProperty POWERED = Properties.POWERED;
+    private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(6, 6, 14, 10, 10, 16);
+    private static final VoxelShape VOXEL_SHAPE_UP = Block.createCuboidShape(6, 0, 6, 10, 2, 10);
+    private static final VoxelShape VOXEL_SHAPE_DOWN = Block.createCuboidShape(6, 14, 6, 10, 16, 10);
 
-    public TripMineBlock(Settings settings) {
+    public LaserSensorBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false));
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false).with(POWERED, false));
     }
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
-        world.scheduleBlockTick(pos, this, 40, TickPriority.NORMAL);
+        world.scheduleBlockTick(pos, this, 20, TickPriority.NORMAL);
     }
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (state.get(SET)) {
             boolean shouldPower = this.shouldPower(world, pos, state);
-            if (shouldPower) {
-                world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 3.0f, World.ExplosionSourceType.NONE);
-                world.removeBlock(pos, false);
+            if (state.get(POWERED) != shouldPower) {
+                world.setBlockState(pos, state.with(POWERED, shouldPower), 3);
+                state.updateNeighbors(world, pos, 3);
             }
         } else {
             world.setBlockState(pos, state.with(SET, true), 3);
@@ -60,10 +61,10 @@ public class TripMineBlock extends Block {
     }
 
     private boolean shouldPower(World world, BlockPos pos, BlockState state) {
-        Direction direction = state.get(TripMineBlock.FACING);
-        int distance = LockAndBlock.CONFIG.allowTripMinesAir() ? LockAndBlock.CONFIG.maxTripMineDistance() + 1 : 0;
+        Direction direction = state.get(LaserSensorBlock.FACING);
+        int distance = LockAndBlock.CONFIG.allowLaserInAir() ? LockAndBlock.CONFIG.maxLaserSensorDistance() + 1 : 0;
 
-        for (int i = 1; i <= LockAndBlock.CONFIG.maxTripMineDistance() + 1; i++) {
+        for (int i = 1; i <= LockAndBlock.CONFIG.maxLaserSensorDistance() + 1; i++) {
             BlockState blockState = world.getBlockState(pos.offset(direction, i));
             if (blockState.isSideSolid(world, pos.offset(direction, i), direction.getOpposite(), SideShapeType.FULL)) {
                 distance = i;
@@ -98,7 +99,7 @@ public class TripMineBlock extends Block {
         float steps = 10f;
         for (int i = 0; i < (int) steps; i++) {
             ((ServerWorld) world).spawnParticles(
-                    new DustParticleEffect(Vec3d.unpackRgb(0x00FF00).toVector3f(), (float) 0.5), // Green color
+                    new DustParticleEffect(Vec3d.unpackRgb(0x30BEFF).toVector3f(), (float) 0.5), // Blue color
                     d + (double) direction.getOffsetX() * (i / steps),
                     e + (double) direction.getOffsetY() * (i / steps),
                     f + (double) direction.getOffsetZ() * (i / steps),
@@ -107,6 +108,21 @@ public class TripMineBlock extends Block {
                     0.0
             );
         }
+    }
+
+    @Override
+    public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+        return state.get(POWERED) ? 15 : 0;
+    }
+
+    @Override
+    public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+        return state.get(POWERED) ? 15 : 0;
+    }
+
+    @Override
+    public boolean emitsRedstonePower(BlockState state) {
+        return true;
     }
 
     protected static Direction getDirection(BlockState state) {
@@ -139,7 +155,7 @@ public class TripMineBlock extends Block {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, SET);
+        builder.add(FACING, SET, POWERED);
     }
 
     @Override

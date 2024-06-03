@@ -27,40 +27,68 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TripMineBlock extends Block {
+public class RedstoneLaser extends Block {
     public static final DirectionProperty FACING = Properties.FACING;
-    public static final BooleanProperty SET = LockAndBlock.SET;
-    private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(5, 5, 14, 11, 11, 16);
-    private static final VoxelShape VOXEL_SHAPE_UP = Block.createCuboidShape(5, 0, 5, 11, 2, 11);
-    private static final VoxelShape VOXEL_SHAPE_DOWN = Block.createCuboidShape(5, 14, 5, 11, 16, 11);
+    public static final BooleanProperty POWERED = Properties.POWERED;
+    private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(6, 6, 14, 10, 10, 16);
+    private static final VoxelShape VOXEL_SHAPE_UP = Block.createCuboidShape(6, 0, 6, 10, 2, 10);
+    private static final VoxelShape VOXEL_SHAPE_DOWN = Block.createCuboidShape(6, 14, 6, 10, 16, 10);
 
-    public TripMineBlock(Settings settings) {
+    public RedstoneLaser(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false));
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false));
+    }
+
+    private static void spawnParticles(BlockState state, World world, BlockPos pos) {
+        if (!(world instanceof ServerWorld)) return; // Ensure we are on the server side
+
+        Direction direction = state.get(FACING).getOpposite();
+        Direction direction2 = getDirection(state).getOpposite();
+        double d = (double) pos.getX() + 0.5 + 0.0 * (double) direction.getOffsetX() + 0.4 * (double) direction2.getOffsetX();
+        double e = (double) pos.getY() + 0.5 + 0.0 * (double) direction.getOffsetY() + 0.4 * (double) direction2.getOffsetY();
+        double f = (double) pos.getZ() + 0.5 + 0.0 * (double) direction.getOffsetZ() + 0.4 * (double) direction2.getOffsetZ();
+        float steps = 10f;
+        for (int i = 0; i < (int) steps; i++) {
+            ((ServerWorld) world).spawnParticles(
+                    new DustParticleEffect(Vec3d.unpackRgb(0xFF0000).toVector3f(), (float) 0.5), // Red color
+                    d + (double) direction.getOffsetX() * (i / steps),
+                    e + (double) direction.getOffsetY() * (i / steps),
+                    f + (double) direction.getOffsetZ() * (i / steps),
+                    1,
+                    0.0, 0.0, 0.0,
+                    0.0
+            );
+        }
+    }
+
+    protected static Direction getDirection(BlockState state) {
+        return state.get(FACING);
     }
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        super.onPlaced(world, pos, state, placer, itemStack);
-        world.scheduleBlockTick(pos, this, 40, TickPriority.NORMAL);
+        if (!world.isClient) {
+            boolean bl = state.get(POWERED);
+            if (bl != world.isReceivingRedstonePower(pos)) {
+                if (world.isReceivingRedstonePower(pos)) {
+                    world.scheduleBlockTick(pos, this, 5, TickPriority.NORMAL);
+                }
+                world.setBlockState(pos, state.cycle(POWERED), 2);
+            }
+        }
+        world.scheduleBlockTick(pos, this, 1, TickPriority.NORMAL);
     }
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if (state.get(SET)) {
-            boolean shouldPower = this.shouldPower(world, pos, state);
-            if (shouldPower) {
-                world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 3.0f, World.ExplosionSourceType.NONE);
-                world.removeBlock(pos, false);
-            }
-        } else {
-            world.setBlockState(pos, state.with(SET, true), 3);
+        if (state.get(POWERED)) {
+            this.processLaser(world, pos, state);
         }
         world.scheduleBlockTick(pos, this, 1, TickPriority.byIndex(1));
     }
 
-    private boolean shouldPower(World world, BlockPos pos, BlockState state) {
-        Direction direction = state.get(TripMineBlock.FACING);
+    private void processLaser(World world, BlockPos pos, BlockState state) {
+        Direction direction = state.get(RedstoneLaser.FACING);
         int distance = LockAndBlock.CONFIG.allowTripMinesAir() ? LockAndBlock.CONFIG.maxTripMineDistance() + 1 : 0;
 
         for (int i = 1; i <= LockAndBlock.CONFIG.maxTripMineDistance() + 1; i++) {
@@ -77,40 +105,32 @@ public class TripMineBlock extends Block {
         }
 
         if (distance == 0) {
-            return false;
+            return;
         }
-
         // check if there are players in the area
         Box detectionBox = new Box(pos).expand(direction.getOffsetX() * distance, direction.getOffsetY() * distance, direction.getOffsetZ() * distance);
 
         List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, detectionBox, entity -> true);
-        return !entities.isEmpty();
-    }
 
-    private static void spawnParticles(BlockState state, World world, BlockPos pos) {
-        if (!(world instanceof ServerWorld)) return; // Ensure we are on the server side
-
-        Direction direction = state.get(FACING).getOpposite();
-        Direction direction2 = getDirection(state).getOpposite();
-        double d = (double) pos.getX() + 0.5 + 0.0 * (double) direction.getOffsetX() + 0.4 * (double) direction2.getOffsetX();
-        double e = (double) pos.getY() + 0.5 + 0.0 * (double) direction.getOffsetY() + 0.4 * (double) direction2.getOffsetY();
-        double f = (double) pos.getZ() + 0.5 + 0.0 * (double) direction.getOffsetZ() + 0.4 * (double) direction2.getOffsetZ();
-        float steps = 10f;
-        for (int i = 0; i < (int) steps; i++) {
-            ((ServerWorld) world).spawnParticles(
-                    new DustParticleEffect(Vec3d.unpackRgb(0x00FF00).toVector3f(), (float) 0.5), // Green color
-                    d + (double) direction.getOffsetX() * (i / steps),
-                    e + (double) direction.getOffsetY() * (i / steps),
-                    f + (double) direction.getOffsetZ() * (i / steps),
-                    1,
-                    0.0, 0.0, 0.0,
-                    0.0
-            );
+        if (!world.isClient) {
+            for (LivingEntity entity : entities) {
+                if (entity.canTakeDamage())
+                    entity.damage(LockAndBlock.damageOf(world, LockAndBlock.LASER_DAMAGE), LockAndBlock.CONFIG.redstoneLaserDamage());
+            }
         }
+
     }
 
-    protected static Direction getDirection(BlockState state) {
-        return state.get(FACING);
+    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+        if (!world.isClient) {
+            boolean bl = state.get(POWERED);
+            if (bl != world.isReceivingRedstonePower(pos)) {
+                if (world.isReceivingRedstonePower(pos)) {
+                    world.scheduleBlockTick(pos, this, 5, TickPriority.NORMAL);
+                }
+                world.setBlockState(pos, state.cycle(POWERED), 2);
+            }
+        }
     }
 
     @Override
@@ -139,7 +159,7 @@ public class TripMineBlock extends Block {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, SET);
+        builder.add(FACING, POWERED);
     }
 
     @Override

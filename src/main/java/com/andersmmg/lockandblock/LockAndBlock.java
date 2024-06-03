@@ -36,6 +36,7 @@ public class LockAndBlock implements ModInitializer {
     public static final OwoNetChannel KEYPAD_CODE_CHANNEL = OwoNetChannel.create(id("keypad_code"));
 
     public static final RegistryKey<DamageType> TESLA_COIL_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, id("tesla_coil_damage_type"));
+    public static final RegistryKey<DamageType> LASER_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, id("laser_damage_type"));
 
     public static Identifier id(String path) {
         return new Identifier(MOD_ID, path);

@@ -28,6 +28,8 @@ public class ModModelProvider extends FabricModelProvider {
         registerMine(blockStateModelGenerator, ModBlocks.PROX_MINE);
         registerMine(blockStateModelGenerator, ModBlocks.LAND_MINE);
         registerMine(blockStateModelGenerator, ModBlocks.TRIP_MINE);
+        registerMine(blockStateModelGenerator, ModBlocks.LASER_SENSOR);
+        registerRotatablePowered(blockStateModelGenerator, ModBlocks.REDSTONE_LASER);
     }
 
     @Override
@@ -35,6 +37,7 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.KEYCARD, Models.GENERATED);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void registerForceField(BlockStateModelGenerator blockStateModelGenerator, Block block) {
         Identifier model_base = ModelIds.getBlockModelId(block);
         blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block, BlockStateVariant.create().put(VariantSettings.MODEL, model_base)));
@@ -43,9 +46,7 @@ public class ModModelProvider extends FabricModelProvider {
     public final void registerForceFieldGenerator(BlockStateModelGenerator blockStateModelGenerator, Block block, TexturedModel.Factory modelFactory) {
         Identifier identifier = modelFactory.upload(block, blockStateModelGenerator.modelCollector);
         Identifier identifier2 = TextureMap.getSubId(block, "_front_on");
-        Identifier identifier3 = modelFactory.get(block).textures((textures) -> {
-            textures.put(TextureKey.FRONT, identifier2);
-        }).upload(block, "_on", blockStateModelGenerator.modelCollector);
+        Identifier identifier3 = modelFactory.get(block).textures((textures) -> textures.put(TextureKey.FRONT, identifier2)).upload(block, "_on", blockStateModelGenerator.modelCollector);
         blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block)
                 .coordinate(BlockStateModelGenerator.createBooleanModelMap(Properties.POWERED, identifier3, identifier))
                 .coordinate(BlockStateModelGenerator.createNorthDefaultHorizontalRotationStates()));

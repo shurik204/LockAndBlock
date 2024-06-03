@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- Redstone Laser
+- Laser Sensor
+
 ### Changed
 
 ### Deprecated

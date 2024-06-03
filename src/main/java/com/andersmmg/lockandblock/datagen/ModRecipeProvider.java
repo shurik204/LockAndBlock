@@ -116,5 +116,25 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .input(Items.COPPER_INGOT)
                 .criterion("has_item", conditionsFromItem(ModBlocks.PLAYER_SENSOR))
                 .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.LASER_SENSOR)
+                .pattern(" g ")
+                .pattern("rPr")
+                .pattern(" c ")
+                .input('g', Blocks.GLASS_PANE)
+                .input('r', Items.REDSTONE)
+                .input('P', Items.PRISMARINE_SHARD)
+                .input('c', Items.COMPARATOR)
+                .criterion(hasItem(Items.PRISMARINE_SHARD), conditionsFromItem(Items.PRISMARINE_SHARD))
+                .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.REDSTONE_LASER)
+                .pattern(" p ")
+                .pattern("rBr")
+                .pattern(" g ")
+                .input('p', Items.PRISMARINE_SHARD)
+                .input('r', Items.REDSTONE)
+                .input('B', Items.BLAZE_ROD)
+                .input('g', Blocks.GLASS_PANE)
+                .criterion("has_item", conditionsFromItem(Items.REDSTONE))
+                .offerTo(exporter);
     }
 }

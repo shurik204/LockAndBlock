@@ -10,6 +10,8 @@
   "block.lockandblock.land_mine": "Land Mine",
   "block.lockandblock.prox_mine": "Proximity Mine",
   "block.lockandblock.trip_mine": "Trip Mine",
+  "block.lockandblock.laser_sensor": "Laser Sensor",
+  "block.lockandblock.redstone_laser": "Redstone Laser",
   "itemGroup.lockandblock.item_group": "Lock & Block",
   "text.lockandblock.wrong_keycard": "Access denied.",
   "text.lockandblock.blank_keycard": "Blank keycard detected.",
@@ -35,5 +37,6 @@
   "gui.lockandblock.keycard_reader.remove": "Remove",
   "sounds.lockandblock.beep_success": "Successful beep",
   "sounds.lockandblock.beep_error": "Error beep",
-  "death.attack.tesla_coil": "%s encountered high voltage"
+  "death.attack.tesla_coil": "%s encountered high voltage",
+  "death.attack.laser": "%s was sliced in half"
 }

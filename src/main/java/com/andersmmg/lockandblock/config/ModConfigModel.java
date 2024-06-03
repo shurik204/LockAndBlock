@@ -18,6 +18,13 @@ public class ModConfigModel {
     public float playerSensorRange = 4.0f;
     @RangeConstraint(min = 3, max = 30)
     public int maxTripMineDistance = 7;
+    @RangeConstraint(min = 3, max = 30)
+    public int maxLaserSensorDistance = 10;
+    @RangeConstraint(min = 1.0f, max = 10.0f)
+    public float redstoneLaserDamage = 3.0f;
 
+    @SuppressWarnings("unused")
     public boolean allowTripMinesAir = true;
+    @SuppressWarnings("unused")
+    public boolean allowLaserInAir = true;
 }

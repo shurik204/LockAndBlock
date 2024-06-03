@@ -20,6 +20,8 @@ Lock & Block introduces fun and creative security features to protect your Minec
 - **Force fields:** Create an unbreakable wall that you can disable and enable at will
 - **Mines:** Protect you stuff with explosives, using laser trip mines, land mines, and proximity mines
 - **Player Sensor:** Detect when a player is near and trigger a redstone contraption
+- **Laser Sensor:** Detect when players or entities touch a laser with a redstone signal
+- **Redstone Laser:** Protect an area with painful lasers
 
 ### Requirements:
 
