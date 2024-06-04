@@ -38,7 +38,7 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
+    modImplementation "io.wispforest:lavender:${project.lavender_version}"
 
     modApi "com.terraformersmc:modmenu:7.2.2"
 
@@ -147,6 +147,6 @@ githubRelease {
 //    dryRun = true
 }
 
-task uploadRelease {
+tasks.register('uploadRelease') {
     dependsOn 'modrinth', 'githubRelease'
 }

@@ -1,5 +1,6 @@
 {
   "item.lockandblock.keycard": "Keycard",
+  "item.lockandblock.guidebook": "Lock & Block Guidebook",
   "block.lockandblock.keycard_reader": "Keycard Reader",
   "block.lockandblock.keycard_writer": "Keycard Writer",
   "block.lockandblock.keycard_cloner": "Keycard Cloner",

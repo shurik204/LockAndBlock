@@ -18,10 +18,10 @@ public class ModBlocks {
             new KeycardWriterBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
     public static final Block KEYCARD_CLONER = registerBlock("keycard_cloner",
             new KeycardClonerBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
-    public static final Block TESLA_COIL = registerBlock("tesla_coil",
-            new TeslaCoilBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
     public static final Block KEYPAD = registerBlock("keypad",
             new KeypadBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
+    public static final Block TESLA_COIL = registerBlock("tesla_coil",
+            new TeslaCoilBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
     public static final Block FORCEFIELD_GENERATOR = registerBlock("forcefield_generator",
             new ForceFieldGeneratorBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
     public static final Block FORCEFIELD = registerBlockOnly("forcefield",
