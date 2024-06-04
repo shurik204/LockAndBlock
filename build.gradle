@@ -51,13 +51,15 @@ processResources {
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
     inputs.property "loader_version", project.loader_version
+    inputs.property "lavender_version", project.lavender_version
     filteringCharset "UTF-8"
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
                 "minecraft_version": project.minecraft_version,
-                "loader_version": project.loader_version
+                "loader_version": project.loader_version,
+                "lavender_version": project.lavender_version
     }
 }
 
@@ -132,6 +134,7 @@ modrinth {
     dependencies {
         required.project "fabric-api"
         required.project "owo-lib"
+        required.project "lavender"
     }
 //    debugMode = true
 }

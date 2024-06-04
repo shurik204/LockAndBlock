@@ -15,6 +15,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+## [0.5.1] - 2024-06-04
+
+### Fixed
+
+- Updated requirements
+
 ## [0.5.0] - 2024-06-04
 
 ### Added
@@ -84,8 +90,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Keycard writer
 - Keycard cloner
 
-[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.5.1...HEAD
 
+[0.5.1]: https://github.com/andersmmg/LockAndBlock/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/andersmmg/LockAndBlock/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.3.0...v0.4.0
