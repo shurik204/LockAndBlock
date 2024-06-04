@@ -7,6 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -66,7 +67,8 @@ public class LaserSensorBlock extends Block {
 
         for (int i = 1; i <= LockAndBlock.CONFIG.maxLaserSensorDistance() + 1; i++) {
             BlockState blockState = world.getBlockState(pos.offset(direction, i));
-            if (blockState.isSideSolid(world, pos.offset(direction, i), direction.getOpposite(), SideShapeType.FULL)) {
+            String blockId = Registries.BLOCK.getId(blockState.getBlock()).toString();
+            if (!LockAndBlock.CONFIG.laserPassthroughWhitelist().contains(blockId) && !blockState.isTransparent(world, pos.offset(direction, i)) && blockState.isSideSolid(world, pos.offset(direction, i), direction.getOpposite(), SideShapeType.FULL)) {
                 distance = i;
                 break;
             }

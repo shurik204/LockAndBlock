@@ -5,6 +5,8 @@ import io.wispforest.owo.config.annotation.Config;
 import io.wispforest.owo.config.annotation.Modmenu;
 import io.wispforest.owo.config.annotation.RangeConstraint;
 
+import java.util.List;
+
 @Modmenu(modId = LockAndBlock.MOD_ID)
 @Config(name = LockAndBlock.MOD_ID, wrapperName = "ModConfig")
 public class ModConfigModel {
@@ -27,4 +29,7 @@ public class ModConfigModel {
     public boolean allowTripMinesAir = true;
     @SuppressWarnings("unused")
     public boolean allowLaserInAir = true;
+
+    @SuppressWarnings("unused")
+    public List<String> laserPassthroughWhitelist = List.of("minecraft:slime_block", "minecraft:tinted_glass");
 }
