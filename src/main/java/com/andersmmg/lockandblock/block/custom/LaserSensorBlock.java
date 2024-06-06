@@ -41,55 +41,6 @@ public class LaserSensorBlock extends Block {
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false).with(POWERED, false));
     }
 
-    @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        super.onPlaced(world, pos, state, placer, itemStack);
-        world.scheduleBlockTick(pos, this, 20, TickPriority.NORMAL);
-    }
-
-    @Override
-    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        if (state.get(SET)) {
-            boolean shouldPower = this.shouldPower(world, pos, state);
-            if (state.get(POWERED) != shouldPower) {
-                world.setBlockState(pos, state.with(POWERED, shouldPower), 3);
-                state.updateNeighbors(world, pos, 3);
-            }
-        } else {
-            world.setBlockState(pos, state.with(SET, true), 3);
-        }
-        world.scheduleBlockTick(pos, this, 1, TickPriority.byIndex(1));
-    }
-
-    private boolean shouldPower(World world, BlockPos pos, BlockState state) {
-        Direction direction = state.get(LaserSensorBlock.FACING);
-        int distance = LockAndBlock.CONFIG.allowLaserInAir() ? LockAndBlock.CONFIG.maxLaserSensorDistance() + 1 : 0;
-
-        for (int i = 1; i <= LockAndBlock.CONFIG.maxLaserSensorDistance() + 1; i++) {
-            BlockState blockState = world.getBlockState(pos.offset(direction, i));
-            String blockId = Registries.BLOCK.getId(blockState.getBlock()).toString();
-            if (!LockAndBlock.CONFIG.laserPassthroughWhitelist().contains(blockId) && !blockState.isTransparent(world, pos.offset(direction, i)) && blockState.isSideSolid(world, pos.offset(direction, i), direction.getOpposite(), SideShapeType.FULL)) {
-                distance = i;
-                break;
-            }
-        }
-
-        // spawn a line of particles
-        for (int i = 1; i <= distance; i++) {
-            spawnParticles(state, world, pos.offset(direction, i));
-        }
-
-        if (distance == 0) {
-            return false;
-        }
-
-        // check if there are players in the area
-        Box detectionBox = new Box(pos).expand(direction.getOffsetX() * distance, direction.getOffsetY() * distance, direction.getOffsetZ() * distance);
-
-        List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, detectionBox, entity -> true);
-        return !entities.isEmpty();
-    }
-
     private static void spawnParticles(BlockState state, World world, BlockPos pos) {
         if (!(world instanceof ServerWorld)) return; // Ensure we are on the server side
 
@@ -112,6 +63,72 @@ public class LaserSensorBlock extends Block {
         }
     }
 
+    protected static Direction getDirection(BlockState state) {
+        return state.get(FACING);
+    }
+
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        super.onPlaced(world, pos, state, placer, itemStack);
+        world.scheduleBlockTick(pos, this, 20, TickPriority.NORMAL);
+    }
+
+    @Override
+    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        if (state.get(SET)) {
+            boolean shouldPower = this.shouldPower(world, pos, state);
+            if (state.get(POWERED) != shouldPower) {
+                world.setBlockState(pos, state.with(POWERED, shouldPower), 3);
+                state.updateNeighbors(world, pos, 3);
+            }
+        } else {
+            world.setBlockState(pos, state.with(SET, true), 3);
+        }
+        world.scheduleBlockTick(pos, this, 1, TickPriority.byIndex(1));
+    }
+
+    private boolean shouldPower(World world, BlockPos pos, BlockState state) {
+        Direction direction = state.get(LaserSensorBlock.FACING);
+        double distance = LockAndBlock.CONFIG.allowLaserInAir() ? LockAndBlock.CONFIG.maxLaserSensorDistance() + 1 : 0;
+
+        for (int i = 1; i <= LockAndBlock.CONFIG.maxLaserSensorDistance() + 1; i++) {
+            BlockState blockState = world.getBlockState(pos.offset(direction, i));
+            String blockId = Registries.BLOCK.getId(blockState.getBlock()).toString();
+            if (LockAndBlock.CONFIG.laserPassthroughWhitelist().contains(blockId)) {
+                continue;
+            }
+            if (blockState.getCameraCollisionShape(world, pos.offset(direction, i), ShapeContext.absent()).isEmpty()) {
+                continue;
+            }
+            if (blockState.isSideSolid(world, pos.offset(direction, i), direction.getOpposite(), SideShapeType.CENTER)) {
+                distance = i;
+                break;
+            }
+            if (blockState.isSideSolid(world, pos.offset(direction, i), direction, SideShapeType.CENTER)) {
+                distance = i + 1;
+                break;
+            }
+        }
+
+        // spawn a line of particles
+        for (int i = 1; i <= distance; i++) {
+            spawnParticles(state, world, pos.offset(direction, i));
+        }
+
+        if (distance == 0) {
+            return false;
+        }
+
+        // check if there are players in the area
+        double expandOffset = ((distance - 1) / 2.0f);
+        Box detectionBox = new Box(pos).contract(0.5f)
+                .expand(direction.getOffsetX() * expandOffset, direction.getOffsetY() * expandOffset, direction.getOffsetZ() * expandOffset)
+                .offset(direction.getOffsetX() * (distance - 1) * 0.5f, direction.getOffsetY() * (distance - 1) * 0.5f, direction.getOffsetZ() * (distance - 1) * 0.5f);
+
+        List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, detectionBox, entity -> true);
+        return !entities.isEmpty();
+    }
+
     @Override
     public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
         return state.get(POWERED) ? 15 : 0;
@@ -125,10 +142,6 @@ public class LaserSensorBlock extends Block {
     @Override
     public boolean emitsRedstonePower(BlockState state) {
         return true;
-    }
-
-    protected static Direction getDirection(BlockState state) {
-        return state.get(FACING);
     }
 
     @Override

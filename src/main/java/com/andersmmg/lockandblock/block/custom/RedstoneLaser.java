@@ -95,8 +95,18 @@ public class RedstoneLaser extends Block {
         for (int i = 1; i <= LockAndBlock.CONFIG.maxTripMineDistance() + 1; i++) {
             BlockState blockState = world.getBlockState(pos.offset(direction, i));
             String blockId = Registries.BLOCK.getId(blockState.getBlock()).toString();
-            if (!LockAndBlock.CONFIG.laserPassthroughWhitelist().contains(blockId) && !blockState.isTransparent(world, pos.offset(direction, i)) && blockState.isSideSolid(world, pos.offset(direction, i), direction.getOpposite(), SideShapeType.FULL)) {
+            if (LockAndBlock.CONFIG.laserPassthroughWhitelist().contains(blockId)) {
+                continue;
+            }
+            if (blockState.getCameraCollisionShape(world, pos.offset(direction, i), ShapeContext.absent()).isEmpty()) {
+                continue;
+            }
+            if (blockState.isSideSolid(world, pos.offset(direction, i), direction.getOpposite(), SideShapeType.CENTER)) {
                 distance = i;
+                break;
+            }
+            if (blockState.isSideSolid(world, pos.offset(direction, i), direction, SideShapeType.CENTER)) {
+                distance = i + 1;
                 break;
             }
         }
@@ -110,7 +120,10 @@ public class RedstoneLaser extends Block {
             return;
         }
         // check if there are players in the area
-        Box detectionBox = new Box(pos).expand(direction.getOffsetX() * distance, direction.getOffsetY() * distance, direction.getOffsetZ() * distance);
+        double expandOffset = ((double) (distance - 1) / 2.0f);
+        Box detectionBox = new Box(pos).contract(0.5f)
+                .expand(direction.getOffsetX() * expandOffset, direction.getOffsetY() * expandOffset, direction.getOffsetZ() * expandOffset)
+                .offset(direction.getOffsetX() * (distance - 1) * 0.5f, direction.getOffsetY() * (distance - 1) * 0.5f, direction.getOffsetZ() * (distance - 1) * 0.5f);
 
         List<LivingEntity> entities = world.getEntitiesByClass(LivingEntity.class, detectionBox, entity -> true);
 
