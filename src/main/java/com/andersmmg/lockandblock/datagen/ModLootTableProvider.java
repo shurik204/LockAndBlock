@@ -14,6 +14,7 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         addDrop(ModBlocks.TRIP_MINE);
         addDrop(ModBlocks.PROX_MINE);
         addDrop(ModBlocks.LAND_MINE);
+        addDrop(ModBlocks.DETONATOR_MINE);
         addDrop(ModBlocks.LASER_SENSOR);
         addDrop(ModBlocks.PLAYER_SENSOR);
         addDrop(ModBlocks.REDSTONE_LASER);

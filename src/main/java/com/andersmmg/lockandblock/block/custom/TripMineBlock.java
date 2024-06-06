@@ -31,9 +31,9 @@ import java.util.List;
 public class TripMineBlock extends Block {
     public static final DirectionProperty FACING = Properties.FACING;
     public static final BooleanProperty SET = LockAndBlock.SET;
-    private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(5, 5, 14, 11, 11, 16);
-    private static final VoxelShape VOXEL_SHAPE_UP = Block.createCuboidShape(5, 0, 5, 11, 2, 11);
-    private static final VoxelShape VOXEL_SHAPE_DOWN = Block.createCuboidShape(5, 14, 5, 11, 16, 11);
+    private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(5, 6, 14, 11, 10, 16);
+    private static final VoxelShape VOXEL_SHAPE_UP = Block.createCuboidShape(5, 0, 6, 11, 2, 10);
+    private static final VoxelShape VOXEL_SHAPE_DOWN = Block.createCuboidShape(5, 14, 6, 11, 16, 10);
 
     public TripMineBlock(Settings settings) {
         super(settings);

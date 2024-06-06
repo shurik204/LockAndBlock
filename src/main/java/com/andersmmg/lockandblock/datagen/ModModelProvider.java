@@ -29,6 +29,7 @@ public class ModModelProvider extends FabricModelProvider {
         registerMine(blockStateModelGenerator, ModBlocks.LAND_MINE);
         registerMine(blockStateModelGenerator, ModBlocks.TRIP_MINE);
         registerMine(blockStateModelGenerator, ModBlocks.LASER_SENSOR);
+        registerMine(blockStateModelGenerator, ModBlocks.DETONATOR_MINE);
         registerRotatablePowered(blockStateModelGenerator, ModBlocks.REDSTONE_LASER);
     }
 
@@ -36,6 +37,7 @@ public class ModModelProvider extends FabricModelProvider {
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(ModItems.KEYCARD, Models.GENERATED);
         itemModelGenerator.register(ModItems.GUIDEBOOK, Models.GENERATED);
+        itemModelGenerator.register(ModItems.REMOTE_DETONATOR, Models.GENERATED);
     }
 
     @SuppressWarnings("SameParameterValue")

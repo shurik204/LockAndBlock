@@ -30,6 +30,7 @@ public class LockAndBlock implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final ModConfig CONFIG = ModConfig.createAndLoad();
     public static final String CARD_UUID_KEY = "card_uuid";
+    public static final String DETONATOR_PAIR_KEY = "paired_blocks";
     public static final BooleanProperty SET = BooleanProperty.of("set");
 
     public static final OwoNetChannel KEYCARD_READER_CHANNEL = OwoNetChannel.create(id("keycard_reader"));

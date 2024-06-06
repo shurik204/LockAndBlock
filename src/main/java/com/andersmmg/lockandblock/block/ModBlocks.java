@@ -38,6 +38,8 @@ public class ModBlocks {
             new LaserSensorBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
     public static final Block REDSTONE_LASER = registerBlock("redstone_laser",
             new RedstoneLaser(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
+    public static final Block DETONATOR_MINE = registerBlock("detonator_mine",
+            new DetonatorMineBlock(FabricBlockSettings.copyOf(Blocks.WHITE_CONCRETE).nonOpaque()));
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);

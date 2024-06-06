@@ -22,7 +22,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     @Override
     public void generate(Consumer<RecipeJsonProvider> exporter) {
-        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.FORCEFIELD_GENERATOR, 2)
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, ModBlocks.FORCEFIELD_GENERATOR, 4)
                 .pattern("rSr")
                 .pattern("SnS")
                 .pattern("rSr")
@@ -135,6 +135,16 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .input('B', Items.BLAZE_ROD)
                 .input('g', Blocks.GLASS_PANE)
                 .criterion("has_item", conditionsFromItem(Items.REDSTONE))
+                .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModBlocks.DETONATOR_MINE)
+                .pattern(" r ")
+                .pattern("cTc")
+                .pattern(" a ")
+                .input('r', Items.REDSTONE)
+                .input('T', Blocks.TNT)
+                .input('c', Items.COPPER_INGOT)
+                .input('a', Items.AMETHYST_SHARD)
+                .criterion("has_item", conditionsFromItem(Blocks.TNT))
                 .offerTo(exporter);
     }
 }
