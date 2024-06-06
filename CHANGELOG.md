@@ -7,15 +7,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [0.6.0] - 2024-06-05
+
+### Added
+
 - Detonator mine & remote detonator
 
 ### Changed
 
 - Made force field generator crafting less expensive
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 
@@ -96,8 +104,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Keycard writer
 - Keycard cloner
 
-[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.5.1...HEAD
+[Unreleased]: https://github.com/andersmmg/LockAndBlock/compare/v0.6.0...HEAD
 
+[0.6.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/andersmmg/LockAndBlock/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/andersmmg/LockAndBlock/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/andersmmg/LockAndBlock/compare/v0.4.0...v0.4.1
