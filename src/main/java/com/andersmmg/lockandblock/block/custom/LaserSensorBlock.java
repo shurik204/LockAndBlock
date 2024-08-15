@@ -12,6 +12,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -32,35 +33,14 @@ public class LaserSensorBlock extends Block {
     public static final DirectionProperty FACING = Properties.FACING;
     public static final BooleanProperty SET = LockAndBlock.SET;
     public static final BooleanProperty POWERED = Properties.POWERED;
+    public static final IntProperty POWER = Properties.POWER;
     private static final VoxelShape VOXEL_SHAPE = Block.createCuboidShape(6, 6, 14, 10, 10, 16);
     private static final VoxelShape VOXEL_SHAPE_UP = Block.createCuboidShape(6, 0, 6, 10, 2, 10);
     private static final VoxelShape VOXEL_SHAPE_DOWN = Block.createCuboidShape(6, 14, 6, 10, 16, 10);
 
     public LaserSensorBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false).with(POWERED, false));
-    }
-
-    private static void spawnParticles(BlockState state, World world, BlockPos pos) {
-        if (!(world instanceof ServerWorld)) return; // Ensure we are on the server side
-
-        Direction direction = state.get(FACING).getOpposite();
-        Direction direction2 = getDirection(state).getOpposite();
-        double d = (double) pos.getX() + 0.5 + 0.0 * (double) direction.getOffsetX() + 0.4 * (double) direction2.getOffsetX();
-        double e = (double) pos.getY() + 0.5 + 0.0 * (double) direction.getOffsetY() + 0.4 * (double) direction2.getOffsetY();
-        double f = (double) pos.getZ() + 0.5 + 0.0 * (double) direction.getOffsetZ() + 0.4 * (double) direction2.getOffsetZ();
-        float steps = 10f;
-        for (int i = 0; i < (int) steps; i++) {
-            ((ServerWorld) world).spawnParticles(
-                    new DustParticleEffect(Vec3d.unpackRgb(0x30BEFF).toVector3f(), (float) 0.5), // Blue color
-                    d + (double) direction.getOffsetX() * (i / steps),
-                    e + (double) direction.getOffsetY() * (i / steps),
-                    f + (double) direction.getOffsetZ() * (i / steps),
-                    1,
-                    0.0, 0.0, 0.0,
-                    0.0
-            );
-        }
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(SET, false).with(POWERED, false).with(POWER, 0));
     }
 
     protected static Direction getDirection(BlockState state) {
@@ -88,10 +68,10 @@ public class LaserSensorBlock extends Block {
     }
 
     private boolean shouldPower(World world, BlockPos pos, BlockState state) {
-        Direction direction = state.get(LaserSensorBlock.FACING);
-        double distance = LockAndBlock.CONFIG.allowLaserInAir() ? LockAndBlock.CONFIG.maxLaserSensorDistance() + 1 : 0;
+        Direction direction = state.get(RedstoneLaser.FACING);
+        int distance = LockAndBlock.CONFIG.allowTripMinesAir() ? LockAndBlock.CONFIG.maxTripMineDistance() + 1 : 0;
 
-        for (int i = 1; i <= LockAndBlock.CONFIG.maxLaserSensorDistance() + 1; i++) {
+        for (int i = 1; i <= Math.min(LockAndBlock.CONFIG.maxTripMineDistance() + 1, 15); i++) {
             BlockState blockState = world.getBlockState(pos.offset(direction, i));
             String blockId = Registries.BLOCK.getId(blockState.getBlock()).toString();
             if (LockAndBlock.CONFIG.laserPassthroughWhitelist().contains(blockId)) {
@@ -110,10 +90,7 @@ public class LaserSensorBlock extends Block {
             }
         }
 
-        // spawn a line of particles
-        for (int i = 1; i <= distance; i++) {
-            spawnParticles(state, world, pos.offset(direction, i));
-        }
+        world.setBlockState(pos, state.with(POWER, distance), Block.NOTIFY_LISTENERS);
 
         if (distance == 0) {
             return false;
@@ -170,7 +147,7 @@ public class LaserSensorBlock extends Block {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, SET, POWERED);
+        builder.add(FACING, SET, POWERED, POWER);
     }
 
     @Override
